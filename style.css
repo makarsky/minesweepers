@@ -1,0 +1,67 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Nunito', sans-serif;
+}
+
+.controls {
+	height: 4em;
+}
+
+.control {
+	display: inline-block;
+}
+
+.enabled-flag {
+	background-color: red;
+}
+
+.container {
+	line-height: 0;
+	background-color: #999;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.square {
+	font-size: 18px;
+	vertical-align: middle;
+	text-align: center;
+	box-sizing: border-box;
+	width: 50px;
+	height: 50px;
+	margin: 1px 1px 1px 1px;
+	display: table-cell;
+	background-color: #ccc;
+	box-shadow: 3px 3px 3px 3px #e6e6e6 inset, -3px -3px 3px 3px #aaa inset;
+	border-radius: 6px;
+	transition: border-width 0.1s ease-in-out, box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out;
+}
+
+.square:hover {
+	/*box-shadow:3px 3px 3px 3px #eee inset;*/
+	opacity: 0.9;
+}
+
+.square:active {
+	border-width: 0px;
+	box-shadow: initial;
+	background-color: #aaa;
+}
+
+.square--open {
+	border-width: 0px;
+}
+
+.flag {
+	background-color: red;
+}
+
+.bombed {
+	border-width: 0px;
+	border-color: red;
+}
+
+.square--checked {
+	border-color: green;
+}
