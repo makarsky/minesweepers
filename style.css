@@ -49,8 +49,10 @@ body {
 	background-color: #aaa;
 }
 
-.square--open {
+.square--opened {
 	border-width: 0px;
+	box-shadow: initial;
+	background-color: #aaa;
 }
 
 .flag {

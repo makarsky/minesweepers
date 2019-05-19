@@ -1,5 +1,6 @@
+"use strict";
 var rowNumber = 9;
-var bombsNumber = 10;
+var bombsNumber = rowNumber * 2;
 
 var UI = (function() {
 	var DOMstrings = {
@@ -40,14 +41,14 @@ var UI = (function() {
 		return squares.indexOf(squareElement);
 	}
 
-	function handleSquares(squareData) {
+	function openSquares(squareData) {
 		squareData.forEach(function(el) {
 			squares[el.index].classList.add(DOMstrings.open);
 
-			if (el.label > 1 && el.label < 9) {
-				squares[el.index].classList.add(DOMstrings['open' . el.label]);
+			if (el.value > 1 && el.value < 9) {
+				squares[el.index].classList.add(DOMstrings['open' . el.value]);
 			}
-			if (el.label === 'b') {
+			if (el.value === 'b') {
 				squares[el.index].classList.add(DOMstrings.bomb);
 			}
 		});
@@ -75,6 +76,8 @@ var UI = (function() {
 	};
 })();
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Game = (function() {
 	var isFlagEnabled = false;
 	var squares = [];
@@ -90,26 +93,41 @@ var Game = (function() {
 		}
 
 		for (var i = 0; i < bombsNumber; i++) {
-			var randomRow = Math.floor(Math.random() * bombsNumber / 2);
-			var randomCol = Math.floor(Math.random() * bombsNumber / 2);
-			squares[randomRow][randomCol] = 'b';
-			incrementNeighbours(randomRow, randomCol);
+			var randomRow = Math.floor(Math.random() * rowNumber);
+			var randomCol = Math.floor(Math.random() * rowNumber);
+			squares[randomRow][randomCol].value = 'b';
+			incrementAdjacentSquares(randomRow, randomCol);
 		}
+		console.table(squares.map((i) => i.map(j => j.value)));
 	}
 
-	function incrementNeighbours(row, col) {
-		if (row - 1 >= 0) {
+
+	function incrementAdjacentSquares(row, col) {
+		if (row - 1 >= 0) { // and col
 			for (var j = col - 1; j <= col + 1; j++) {
-				typeof squares[row - 1][j] === 'number' ? squares[row - 1][j]++ : null;
+				var s = squares[row - 1][j];
+
+				if (s && typeof s.value === 'number') {
+					squares[row - 1][j].value++
+				}
 			}
 		}
 
-		typeof squares[row][col - 1] === 'number' ? squares[row][col - 1]++ : null;
-		typeof squares[row][col + 1] === 'number' ? squares[row][col + 1]++ : null;
+		if (squares[row][col - 1] && typeof squares[row][col - 1].value === 'number') {
+			squares[row][col - 1].value++
+		}
 
-		if (row + 1 < bombsNumber / 2) {
+		if (squares[row][col + 1] && typeof squares[row][col + 1].value === 'number') {
+			squares[row][col + 1].value++
+		}
+
+		if (row + 1 < bombsNumber / 2) { // and col
 			for (var j = col - 1; j <= col + 1; j++) {
-				typeof squares[row + 1][j] === 'number' ? squares[row + 1][j]++ : null;
+				var s = squares[row + 1][j];
+
+				if (s && typeof s.value === 'number') {
+					squares[row + 1][j].value++
+				}
 			}
 		}
 	}
@@ -118,10 +136,24 @@ var Game = (function() {
 		var row = Math.floor(index / rowNumber);
 		var col = index % rowNumber;
 
+		if (isNaN(row) || isNaN(col) || row < 0 || col < 0 || row >= rowNumber || col >= rowNumber) {
+			return false;
+		}
+
 		return {row, col};
 	}
 
-	function handleFlag(index) {
+	function getSquareIndexByCoords(coords) {
+		var i = coords.row * rowNumber + coords.col;
+
+		if (coords.row < 0 || coords.col < 0 || coords.row >= rowNumber || coords.col >= rowNumber) {
+			return false;
+		}
+
+		return i;
+	}
+
+	function toggleFlag(index) {
 		var squarePos = getSquarePositionByIndex(index);
 
 		return toggleFlagOnSquare(index, squarePos.row, squarePos.col);
@@ -132,11 +164,9 @@ var Game = (function() {
 
 		if (isFlagSet) {
 			removeFlag(index);
-
 			return false;
 		} else {
 			putFlag(index, row, col);
-
 			return true;
 		}
 	}
@@ -146,9 +176,51 @@ var Game = (function() {
 		console.log(flags);
 	}
 
-	function removeFlag(index, row, col) {
+	function removeFlag(index) {
 		flags = flags.filter(function(el) {return el.index !== index;});
 		console.log(flags);
+	}
+
+	function handleSquare(index) {
+		return openSquaresByIndex(index);
+	}
+
+	function openSquaresByIndex(i) {
+		var position = getSquarePositionByIndex(i);
+		var isFlagSet = flags.some(function(el) {return el.index === i;});
+
+		if (!position || isFlagSet) {
+			return [];
+		}
+
+		var square = squares[position.row][position.col];
+
+		if (square.isOpen) {
+			return [];
+		}
+
+		square.isOpen = true;
+		var squaresToOpen = [{index: i, value: square.value}];
+
+		if (square.value === 'b' || square.value !== 0) {
+			return squaresToOpen;
+		}
+
+		var adjacentSquareCoords = [
+			{row: position.row - 1, col: position.col - 1},
+			{row: position.row - 1, col: position.col},
+			{row: position.row - 1, col: position.col + 1},
+			{row: position.row, col: position.col - 1},
+			{row: position.row, col: position.col + 1},
+			{row: position.row + 1, col: position.col - 1},
+			{row: position.row + 1, col: position.col},
+			{row: position.row + 1, col: position.col + 1}
+		];
+
+		return adjacentSquareCoords.reduce(function (squaresToOpen, coords) {
+			var i = getSquareIndexByCoords(coords);
+			return i ? squaresToOpen.concat(openSquaresByIndex(i)) : squaresToOpen;
+		}, squaresToOpen);
 	}
 
 	// restart() {}
@@ -162,10 +234,13 @@ var Game = (function() {
 		isFlagEnabled: function() {
 			return isFlagEnabled;
 		},
-		handleFlag
+		toggleFlag,
+		handleSquare
 	};
 })();
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Controller = (function(UIController, GameController) {
 	var DOM = UIController.getDOMstrings();
 
@@ -191,7 +266,7 @@ var Controller = (function(UIController, GameController) {
         	var index = UIController.getIndexOfSquare(event.target);
 
         	if (GameController.isFlagEnabled()) {
-            	var isFlagAdded = GameController.handleFlag(index);
+            	var isFlagAdded = GameController.toggleFlag(index);
 
             	if (isFlagAdded) {
 	            	UIController.putFlag(event.target);
@@ -199,9 +274,12 @@ var Controller = (function(UIController, GameController) {
             		UIController.removeFlag(event.target);
 	            }
         	} else {
+				/** [{index: 1, value: 'b'||0||5}] */
         		var squareData = GameController.handleSquare(index);
-        		// [{index: 1, label: 'b' / 5}]
-        		UIController.handleSquares(squareData);
+
+				if (squareData) {
+					// UIController.openSquares(squareData);
+				}
         	}
         }
     };
