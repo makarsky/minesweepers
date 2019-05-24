@@ -21,6 +21,12 @@ body {
 	background-color: #999;
 	display: table-cell;
 	vertical-align: middle;
+	/* Disable text selection */
+	user-select: none;
+}
+
+.disabled {
+	pointer-events: none;
 }
 
 .square {
@@ -33,9 +39,9 @@ body {
 	margin: 1px 1px 1px 1px;
 	display: table-cell;
 	background-color: #ccc;
-	box-shadow: 3px 3px 3px 3px #e6e6e6 inset, -3px -3px 3px 3px #aaa inset;
+	box-shadow: 3px 3px 3px 3px #f1f1f1 inset, -3px -3px 3px 3px #aaa inset;
 	border-radius: 6px;
-	transition: border-width 0.1s ease-in-out, box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out;
+	transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out;
 }
 
 .square:hover {
@@ -44,22 +50,63 @@ body {
 }
 
 .square:active {
-	border-width: 0px;
-	box-shadow: initial;
-	background-color: #aaa;
+	box-shadow: 2px 2px 2px 2px #f1f1f1 inset, -2px -2px 2px 2px #aaa inset;
+	/* box-shadow: initial; */
+	/* background-color: #bbb; */
 }
 
-.square--opened {
+.square--open {
 	border-width: 0px;
 	box-shadow: initial;
-	background-color: #aaa;
+	background-color: #bbb;
+	font-size: 42px
+}
+
+.square--open:hover {
+	opacity: 1;
+}
+
+.square--open:active {
+	box-shadow: initial;
+}
+
+.square--open1 {
+	color: #3F51B5;
+}
+
+.square--open2 {
+	color: #4CAF50;
+}
+
+.square--open3 {
+	color: #f44336;
+}
+
+.square--open4 {
+	color: #673AB7;
+}
+
+.square--open5 {
+	color: #b71c1c;
+}
+
+.square--open6 {
+	color: #009688;
+}
+
+.square--open7 {
+	color:black;
+}
+
+.square--open8 {
+	color: #757575;
 }
 
 .flag {
 	background-color: red;
 }
 
-.bombed {
+.square--bomb {
 	border-width: 0px;
 	border-color: red;
 }
