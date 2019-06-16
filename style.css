@@ -113,18 +113,18 @@ main {
 	border-color: red;
 }
 
-@media only screen and (min-width: 1025px) {
+@media only screen and (min-width: 640px) {
 
 	.square {
-		font-size: 4vw;
-		width: 4vw;
-		height: 4vw;
-		box-shadow: 0.2vw 0.2vw 0.2vw 0.2vw #f1f1f1 inset, -0.2vw -0.2vw 0.2vw 0.2vw #aaa inset;
-		border-radius: 0.4vw;
+		font-size: 3vw;
+		width: 3vw;
+		height: 3vw;
+		box-shadow: 0.15vw 0.15vw 0.15vw 0.15vw #f1f1f1 inset, -0.15vw -0.15vw 0.15vw 0.15vw #aaa inset;
+		border-radius: 0.3vw;
 	}
 
 	.square:active {
-		box-shadow: 0.1vw 0.1vw 0.1vw 0.1vw #f1f1f1 inset, -0.1vw -0.1vw 0.1vw 0.1vw #aaa inset;
+		box-shadow: 0.08vw 0.08vw 0.08vw 0.08vw #f1f1f1 inset, -0.08vw -0.08vw 0.08vw 0.08vw #aaa inset;
 	}
 
 	.square--open {

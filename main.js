@@ -1,6 +1,6 @@
 "use strict";
 var rowNumber = 9;
-var bombsNumber = rowNumber * 2;
+var bombsNumber = 10;
 
 var UI = (function() {
 	var DOMstrings = {
