@@ -9,14 +9,27 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:800" rel="stylesheet">
 </head>
 <body>
-	<header class="controls">
+	<header>
 		<div id="flag-counter" class="control">10</div>
 		<div class="control"><button id="restart-btn">Restart</button></div>
 		<div class="control"><button id="enable-flag-btn">Enable flag</button></div>
 		<div id="time" class="control">50</div>
-	</header>
-  <div class="container"></div>
-  <footer></footer>
+  </header>
+  <main><div class="container"></div></main>
+  <footer>
+    <div class="control">
+      <button id="hint">?</button>
+      <div style="display:none">
+        The game is played by revealing squares of the grid by clicking or otherwise indicating each square. 
+        If a square containing a mine is revealed, the player loses the game. 
+        If no mine is revealed, a digit is instead displayed in the square, indicating how many adjacent squares contain mines; 
+        if no mines are adjacent, the square becomes blank, and all adjacent squares will be recursively revealed. 
+        The player uses this information to deduce the contents of other squares, 
+        and may either safely reveal each square or mark the square as containing a mine.
+      </div>
+    </div>
+    <div>Made by Igor Makarsky</div>
+  </footer>
 
   <script src="main.js"></script>
 </body>
