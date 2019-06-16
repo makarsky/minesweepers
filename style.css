@@ -2,10 +2,17 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Nunito', sans-serif;
+	text-align: center;
+	margin: 0 auto;
 }
 
-.controls {
-	height: 4em;
+header {
+	height: 3em;
+}
+
+main {
+	text-align: center;
+	background-color: #999;
 }
 
 .control {
@@ -18,9 +25,10 @@ body {
 
 .container {
 	line-height: 0;
-	background-color: #999;
-	display: table-cell;
+	display: inline-block;
 	vertical-align: middle;
+	border-spacing: 2px 1px;
+	height: 100%;
 	/* Disable text selection */
 	user-select: none;
 }
@@ -30,36 +38,30 @@ body {
 }
 
 .square {
-	font-size: 18px;
+	font-size: 10vw;
 	vertical-align: middle;
 	text-align: center;
 	box-sizing: border-box;
-	width: 50px;
-	height: 50px;
-	margin: 1px 1px 1px 1px;
+	width: 10vw;
+	height: 10vw;
 	display: table-cell;
 	background-color: #ccc;
-	box-shadow: 3px 3px 3px 3px #f1f1f1 inset, -3px -3px 3px 3px #aaa inset;
-	border-radius: 6px;
+	box-shadow: 0.5vw 0.5vw 0.5vw 0.5vw #f1f1f1 inset, -0.5vw -0.5vw 0.5vw 0.5vw #aaa inset;
+	border-radius: 1vw;
 	transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out;
 }
 
 .square:hover {
-	/*box-shadow:3px 3px 3px 3px #eee inset;*/
 	opacity: 0.9;
 }
 
 .square:active {
-	box-shadow: 2px 2px 2px 2px #f1f1f1 inset, -2px -2px 2px 2px #aaa inset;
-	/* box-shadow: initial; */
-	/* background-color: #bbb; */
+	box-shadow: 0.3vw 0.3vw 0.3vw 0.3vw #f1f1f1 inset, -0.3vw -0.3vw 0.3vw 0.3vw #aaa inset;
 }
 
 .square--open {
-	border-width: 0px;
 	box-shadow: initial;
-	background-color: #bbb;
-	font-size: 42px
+	background-color: #ccc;
 }
 
 .square--open:hover {
@@ -111,6 +113,22 @@ body {
 	border-color: red;
 }
 
-.square--checked {
-	border-color: green;
+@media only screen and (min-width: 1025px) {
+
+	.square {
+		font-size: 4vw;
+		width: 4vw;
+		height: 4vw;
+		box-shadow: 0.2vw 0.2vw 0.2vw 0.2vw #f1f1f1 inset, -0.2vw -0.2vw 0.2vw 0.2vw #aaa inset;
+		border-radius: 0.4vw;
+	}
+
+	.square:active {
+		box-shadow: 0.1vw 0.1vw 0.1vw 0.1vw #f1f1f1 inset, -0.1vw -0.1vw 0.1vw 0.1vw #aaa inset;
+	}
+
+	.square--open {
+		box-shadow: initial;
+		background-color: #ccc;
+	}
 }
