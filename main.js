@@ -6,6 +6,7 @@ var UI = (function() {
 	var DOMstrings = {
 		enableFlagBtn: '#enable-flag-btn',
 		enabledFlag: 'enabled-flag',
+		restartBtn: '#restart-btn',
 		container: '.container',
 		disabled: 'disabled',
 		squareClass: 'square',
@@ -66,6 +67,17 @@ var UI = (function() {
 		squareElement.classList.remove(DOMstrings.flag);
 	}
 
+	function restart() {
+		squares.forEach(function(square) {
+			square.textContent = '';
+			Array.from(square.classList).forEach(function(className) {
+				square.classList.remove(className);
+			});
+			square.classList.add(DOMstrings.squareClass);
+		});
+		document.querySelector(DOMstrings.container).classList.remove(DOMstrings.disabled)
+	}
+
 	return {
 		init,
 		getIndexOfSquare,
@@ -77,7 +89,8 @@ var UI = (function() {
 		},
 		toggleFlagEnabled: function() {
 			document.querySelector(DOMstrings.enableFlagBtn).classList.toggle(DOMstrings.enabledFlag);
-		}
+		},
+		restart
 	};
 })();
 
@@ -89,6 +102,8 @@ var Game = (function() {
 	var flags = [];
 
 	function init() {
+		squares = [];
+
 		for (var i = 0; i < rowNumber; i++) {
 			squares[i] = [];
 
@@ -110,7 +125,7 @@ var Game = (function() {
 			incrementAdjacentSquares(randomRow, randomCol);
 		}
 		// helps with debugging
-		console.table(squares.map((i) => i.map(j => j.value)));
+		// console.table(squares.map((i) => i.map(j => j.value)));
 	}
 
 	function incrementAdjacentSquares(row, col) {
@@ -223,7 +238,11 @@ var Game = (function() {
 		}, squaresToOpen);
 	}
 
-	// restart() {}
+	function restart() {
+		isFlagEnabled = false;
+		flags = [];
+		init();
+	}
 
 	return {
 		init,
@@ -235,7 +254,8 @@ var Game = (function() {
 			return isFlagEnabled;
 		},
 		toggleFlag,
-		handleSquare
+		handleSquare,
+		restart
 	};
 })();
 
@@ -246,7 +266,8 @@ var Controller = (function(UIController, GameController) {
 
 	function setupEventListeners() {
         document.querySelector(DOM.enableFlagBtn).addEventListener('click', toggleFlagEnabled);
-        document.querySelector(DOM.container).addEventListener('click', handleSquare);
+		document.querySelector(DOM.container).addEventListener('click', handleSquare);
+		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
 	}
 
 	function init() {
@@ -282,7 +303,12 @@ var Controller = (function(UIController, GameController) {
 				}
         	}
         }
-    };
+	};
+	
+	function restart() {
+		GameController.restart();
+		UIController.restart();
+	}
 
 	return {
 		init
