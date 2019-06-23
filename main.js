@@ -266,8 +266,25 @@ var Controller = (function(UIController, GameController) {
 
 	function setupEventListeners() {
         document.querySelector(DOM.enableFlagBtn).addEventListener('click', toggleFlagEnabled);
-		document.querySelector(DOM.container).addEventListener('click', handleSquare);
+		// document.querySelector(DOM.container).addEventListener('click', handleSquare);
+		setupTapAndHold();
+		document.querySelector(DOM.container).addEventListener('contextmenu', toggleFlag);
 		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
+	}
+
+	function setupTapAndHold() {
+		var holdStart;
+		document.querySelector(DOM.container).addEventListener('mousedown', function(e) {
+			if (e.button === 0) {
+				holdStart = new Date();
+			}
+		});
+		document.querySelector(DOM.container).addEventListener('mouseup', function(e) {
+			if (e.button === 0) {
+				var diff = new Date() - holdStart;
+				diff > 300 ? toggleFlag(e) : handleSquare(e);
+			}
+		});
 	}
 
 	function init() {
@@ -282,32 +299,45 @@ var Controller = (function(UIController, GameController) {
 	}
 
 	function handleSquare(event) {
-        if (event.target.classList.contains(DOM.squareClass)) {
+        if (!event.target.classList.contains(DOM.squareClass)) {
+			return;
+		}
 
-        	var index = UIController.getIndexOfSquare(event.target);
+		if (GameController.isFlagEnabled()) {
+			toggleFlag(event);
+			return;
+		}
 
-        	if (GameController.isFlagEnabled()) {
-            	var isFlagAdded = GameController.toggleFlag(index);
+		var index = UIController.getIndexOfSquare(event.target);
 
-            	if (isFlagAdded) {
-	            	UIController.putFlag(event.target);
-	            } else {
-            		UIController.removeFlag(event.target);
-	            }
-        	} else {
-				/** [{index: 1, value: 'b'||0||5}] */
-				var squareData = GameController.handleSquare(index);
+		/** [{index: 1, value: 'b'||0||5}] */
+		var squareData = GameController.handleSquare(index);
 
-				if (squareData) {
-					UIController.openSquares(squareData);
-				}
-        	}
-        }
+		if (squareData) {
+			UIController.openSquares(squareData);
+		}
 	};
 	
 	function restart() {
 		GameController.restart();
 		UIController.restart();
+	}
+
+	function toggleFlag(event) {
+		event.preventDefault();
+
+		if (!event.target.classList.contains(DOM.squareClass) || event.target.classList.contains(DOM.open)) {
+			return;
+		}
+		
+		var index = UIController.getIndexOfSquare(event.target);
+		var isFlagAdded = GameController.toggleFlag(index);
+
+		if (isFlagAdded) {
+			UIController.putFlag(event.target);
+		} else {
+			UIController.removeFlag(event.target);
+		}
 	}
 
 	return {
