@@ -5,7 +5,7 @@ var bombsNumber = 10;
 var UI = (function() {
 	var DOMstrings = {
 		enableFlagBtn: '#enable-flag-btn',
-		enabledFlag: 'enabled-flag',
+		flagIcon: 'flag-icon',
 		restartBtn: '#restart-btn',
 		container: '.container',
 		disabled: 'disabled',
@@ -21,7 +21,12 @@ var UI = (function() {
 		open5: 'square--open5',
 		open6: 'square--open6',
 		open7: 'square--open7',
-		open8: 'square--open8'
+		open8: 'square--open8',
+		emojiSmileId: 'emoji-smile',
+		emojiCoolId: 'emoji-cool',
+		emojiOId: 'emoji-o',
+		emojiSadId: 'emoji-sad',
+		hidden: 'hidden'
 	};
 
 	var squares = null;
@@ -37,7 +42,7 @@ var UI = (function() {
 			(i + 1) % Math.sqrt(numberOfSquares) === 0 ? container.innerHTML += '<br>' : null;
 		}
 
-		squares = Array.from(document.getElementsByClassName(DOMstrings.squareClass));
+		squares = Array.from(container.querySelectorAll('.' + DOMstrings.squareClass));
 	}
 
 	function getIndexOfSquare(squareElement) {
@@ -54,7 +59,8 @@ var UI = (function() {
 			} else if (square.value === 'b') {
 				squares[square.index].classList.add(DOMstrings.bomb);
 				squares[square.index].textContent = square.value;
-				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled)
+				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
+				toggleEmojiSad();
 			}
 		});
 	}
@@ -76,6 +82,22 @@ var UI = (function() {
 			square.classList.add(DOMstrings.squareClass);
 		});
 		document.querySelector(DOMstrings.container).classList.remove(DOMstrings.disabled)
+		toggleEmojiSad(true);
+	}
+
+	function toggleEmojiO() {
+		document.getElementById(DOMstrings.emojiOId).classList.toggle(DOMstrings.hidden);
+		document.getElementById(DOMstrings.emojiSmileId).classList.toggle(DOMstrings.hidden);
+	}
+
+	function toggleEmojiSad(restart) {
+		if (restart === true) {
+			document.getElementById(DOMstrings.emojiSadId).classList.add(DOMstrings.hidden);
+			document.getElementById(DOMstrings.emojiSmileId).classList.remove(DOMstrings.hidden);
+		} else {
+			document.getElementById(DOMstrings.emojiSadId).classList.remove(DOMstrings.hidden);
+			document.getElementById(DOMstrings.emojiSmileId).classList.add(DOMstrings.hidden);
+		}
 	}
 
 	return {
@@ -88,9 +110,10 @@ var UI = (function() {
 			return DOMstrings;
 		},
 		toggleFlagEnabled: function() {
-			document.querySelector(DOMstrings.enableFlagBtn).classList.toggle(DOMstrings.enabledFlag);
+			document.querySelector(DOMstrings.enableFlagBtn).classList.toggle(DOMstrings.open);
 		},
-		restart
+		restart,
+		toggleEmojiO
 	};
 })();
 
@@ -277,11 +300,13 @@ var Controller = (function(UIController, GameController) {
 		document.querySelector(DOM.container).addEventListener('mousedown', function(e) {
 			if (e.button === 0) {
 				holdStart = new Date();
+				UIController.toggleEmojiO();
 			}
 		});
 		document.querySelector(DOM.container).addEventListener('mouseup', function(e) {
 			if (e.button === 0) {
 				var diff = new Date() - holdStart;
+				UIController.toggleEmojiO();
 				diff > 300 ? toggleFlag(e) : handleSquare(e);
 			}
 		});
