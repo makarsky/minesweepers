@@ -22,6 +22,7 @@ var UI = (function() {
 		open6: 'square--open6',
 		open7: 'square--open7',
 		open8: 'square--open8',
+		emoji: 'emoji',
 		emojiSmileId: 'emoji-smile',
 		emojiCoolId: 'emoji-cool',
 		emojiOId: 'emoji-o',
@@ -29,6 +30,7 @@ var UI = (function() {
 		hidden: 'hidden'
 	};
 
+	var emojis = null
 	var squares = null;
 
 	function init() {
@@ -43,6 +45,7 @@ var UI = (function() {
 		}
 
 		squares = Array.from(container.querySelectorAll('.' + DOMstrings.squareClass));
+		emojis = Array.from(document.getElementsByClassName(DOMstrings.emoji));
 	}
 
 	function getIndexOfSquare(squareElement) {
@@ -60,9 +63,14 @@ var UI = (function() {
 				squares[square.index].classList.add(DOMstrings.bomb);
 				squares[square.index].textContent = square.value;
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-				toggleEmojiSad();
+				showEmojiSad();
 			}
 		});
+	}
+
+	function showWin() {
+		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
+		showEmojiCool()
 	}
 
 	function putFlag(squareElement) {
@@ -82,7 +90,13 @@ var UI = (function() {
 			square.classList.add(DOMstrings.squareClass);
 		});
 		document.querySelector(DOMstrings.container).classList.remove(DOMstrings.disabled)
-		toggleEmojiSad(true);
+		showEmojiSmile();
+	}
+
+	function hideEmojis() {
+		emojis.forEach(function(emoji) {
+			emoji.classList.add(DOMstrings.hidden);
+		});
 	}
 
 	function toggleEmojiO() {
@@ -90,14 +104,19 @@ var UI = (function() {
 		document.getElementById(DOMstrings.emojiSmileId).classList.toggle(DOMstrings.hidden);
 	}
 
-	function toggleEmojiSad(restart) {
-		if (restart === true) {
-			document.getElementById(DOMstrings.emojiSadId).classList.add(DOMstrings.hidden);
-			document.getElementById(DOMstrings.emojiSmileId).classList.remove(DOMstrings.hidden);
-		} else {
-			document.getElementById(DOMstrings.emojiSadId).classList.remove(DOMstrings.hidden);
-			document.getElementById(DOMstrings.emojiSmileId).classList.add(DOMstrings.hidden);
-		}
+	function showEmojiSad(restart) {
+		hideEmojis();
+		document.getElementById(DOMstrings.emojiSadId).classList.remove(DOMstrings.hidden);
+	}
+
+	function showEmojiCool() {
+		hideEmojis();
+		document.getElementById(DOMstrings.emojiCoolId).classList.remove(DOMstrings.hidden);
+	}
+
+	function showEmojiSmile() {
+		hideEmojis();
+		document.getElementById(DOMstrings.emojiSmileId).classList.remove(DOMstrings.hidden);
 	}
 
 	return {
@@ -113,7 +132,8 @@ var UI = (function() {
 			document.querySelector(DOMstrings.enableFlagBtn).classList.toggle(DOMstrings.open);
 		},
 		restart,
-		toggleEmojiO
+		toggleEmojiO,
+		showWin
 	};
 })();
 
@@ -267,6 +287,17 @@ var Game = (function() {
 		init();
 	}
 
+	function areAllSafeSquaresOpened() {
+		var numberOfOpened = 0;
+		squares.forEach(function(row) {
+			numberOfOpened += row.filter(function(square) {
+				return square.isOpen;
+			}).length;
+		});
+		
+		return (rowNumber * rowNumber - numberOfOpened) === bombsNumber;
+	}
+
 	return {
 		init,
 		putFlag,
@@ -278,7 +309,8 @@ var Game = (function() {
 		},
 		toggleFlag,
 		handleSquare,
-		restart
+		restart,
+		areAllSafeSquaresOpened
 	};
 })();
 
@@ -293,6 +325,7 @@ var Controller = (function(UIController, GameController) {
 		setupTapAndHold();
 		document.querySelector(DOM.container).addEventListener('contextmenu', toggleFlag);
 		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
+		document.addEventListener('checkIfWin', checkIfWin);
 	}
 
 	function setupTapAndHold() {
@@ -338,6 +371,9 @@ var Controller = (function(UIController, GameController) {
 		/** [{index: 1, value: 'b'||0||5}] */
 		var squareData = GameController.handleSquare(index);
 
+		var event = new Event('checkIfWin');
+		document.dispatchEvent(event);
+
 		if (squareData) {
 			UIController.openSquares(squareData);
 		}
@@ -362,6 +398,12 @@ var Controller = (function(UIController, GameController) {
 			UIController.putFlag(event.target);
 		} else {
 			UIController.removeFlag(event.target);
+		}
+	}
+
+	function checkIfWin() {
+		if (GameController.areAllSafeSquaresOpened()) {
+			UIController.showWin();
 		}
 	}
 
