@@ -9,6 +9,7 @@ var UI = (function() {
 		restartBtn: '#restart-btn',
 		container: '.container',
 		disabled: 'disabled',
+		stopwatch: 'stopwatch',
 		squareClass: 'square',
 		flag: 'flag',
 		bomb: 'square--bomb',
@@ -30,7 +31,8 @@ var UI = (function() {
 		hidden: 'hidden'
 	};
 
-	var emojis = null
+	var emojis = null;
+	var stopwatchInterval = null;
 	var squares = null;
 
 	function init() {
@@ -44,7 +46,7 @@ var UI = (function() {
 			(i + 1) % Math.sqrt(numberOfSquares) === 0 ? container.innerHTML += '<br>' : null;
 		}
 
-		squares = Array.from(container.querySelectorAll('.' + DOMstrings.squareClass));
+		squares = Array.from(container.getElementsByClassName(DOMstrings.squareClass));
 		emojis = Array.from(document.getElementsByClassName(DOMstrings.emoji));
 	}
 
@@ -53,6 +55,10 @@ var UI = (function() {
 	}
 
 	function openSquares(squareData) {
+		if (stopwatchInterval === null) {
+			stopwatchInterval = setInterval(updateStopwatch, 1000);
+		}
+
 		squareData.forEach(function(square) {
 			squares[square.index].classList.add(DOMstrings.open);
 
@@ -64,13 +70,35 @@ var UI = (function() {
 				squares[square.index].textContent = square.value;
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 				showEmojiSad();
+				stopStopwatch();
 			}
 		});
 	}
 
 	function showWin() {
+		stopStopwatch();
 		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-		showEmojiCool()
+		showEmojiCool();
+	}
+
+	function updateStopwatch() {
+		var stopwatch = document.getElementById(DOMstrings.stopwatch);
+		var time = parseInt(stopwatch.innerText);
+		++time;
+
+		if (time < 1000) {
+			stopwatch.innerText = ('00' + (time)).slice(-3);
+		}
+	}
+
+	function stopStopwatch() {
+		clearInterval(stopwatchInterval);
+		stopwatchInterval = null;
+	}
+
+	function resetStopwatch() {
+		stopStopwatch();
+		document.getElementById(DOMstrings.stopwatch).innerText = '000';
 	}
 
 	function putFlag(squareElement) {
@@ -82,6 +110,8 @@ var UI = (function() {
 	}
 
 	function restart() {
+		resetStopwatch();
+
 		squares.forEach(function(square) {
 			square.textContent = '';
 			Array.from(square.classList).forEach(function(className) {
@@ -371,12 +401,12 @@ var Controller = (function(UIController, GameController) {
 		/** [{index: 1, value: 'b'||0||5}] */
 		var squareData = GameController.handleSquare(index);
 
-		var event = new Event('checkIfWin');
-		document.dispatchEvent(event);
-
 		if (squareData) {
 			UIController.openSquares(squareData);
 		}
+
+		var event = new Event('checkIfWin');
+		document.dispatchEvent(event);
 	};
 	
 	function restart() {
