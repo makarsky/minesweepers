@@ -354,6 +354,12 @@ var Game = (function() {
 		return (rowNumber * rowNumber - numberOfOpened) === bombsNumber;
 	}
 
+	function areAllFlagsCorrect() {
+		return flags.every(function(flag) {
+			return squares[flag.row][flag.col].value === 'b';
+		}) && (flags.length === bombsNumber);
+	}
+
 	return {
 		init,
 		putFlag,
@@ -366,7 +372,8 @@ var Game = (function() {
 		toggleFlag,
 		handleSquare,
 		restart,
-		areAllSafeSquaresOpened
+		areAllSafeSquaresOpened,
+		areAllFlagsCorrect
 	};
 })();
 
@@ -381,7 +388,8 @@ var Controller = (function(UIController, GameController) {
 		setupTapAndHold();
 		document.querySelector(DOM.container).addEventListener('contextmenu', toggleFlag);
 		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
-		document.addEventListener('checkIfWin', checkIfWin);
+		document.addEventListener('checkIfWinByOpenedSquares', checkIfWinByOpenedSquares);
+		document.addEventListener('checkIfWinByFlag', checkIfWinByFlag);
 	}
 
 	function setupTapAndHold() {
@@ -431,8 +439,7 @@ var Controller = (function(UIController, GameController) {
 			UIController.openSquares(squareData);
 		}
 
-		var event = new Event('checkIfWin');
-		document.dispatchEvent(event);
+		document.dispatchEvent(new Event('checkIfWinByOpenedSquares'));
 	};
 	
 	function restart() {
@@ -455,10 +462,18 @@ var Controller = (function(UIController, GameController) {
 		} else {
 			UIController.removeFlag(event.target);
 		}
+
+		document.dispatchEvent(new Event('checkIfWinByFlag'));
 	}
 
-	function checkIfWin() {
+	function checkIfWinByOpenedSquares() {
 		if (GameController.areAllSafeSquaresOpened()) {
+			UIController.showWin();
+		}
+	}
+
+	function checkIfWinByFlag() {
+		if (GameController.areAllFlagsCorrect()) {
 			UIController.showWin();
 		}
 	}
