@@ -1,4 +1,3 @@
-"use strict";
 var rowNumber = 9;
 var bombsNumber = 10;
 
@@ -6,10 +5,11 @@ var UI = (function() {
 	var DOMstrings = {
 		enableFlagBtn: '#enable-flag-btn',
 		flagIcon: 'flag-icon',
+		flagCounter: '#flag-counter',
 		restartBtn: '#restart-btn',
 		container: '.container',
 		disabled: 'disabled',
-		stopwatch: 'stopwatch',
+		stopwatch: '#stopwatch',
 		squareClass: 'square',
 		flag: 'flag',
 		bomb: 'square--bomb',
@@ -33,6 +33,7 @@ var UI = (function() {
 
 	var emojis = null;
 	var stopwatchInterval = null;
+	var flagCounter = bombsNumber;
 	var squares = null;
 
 	function init() {
@@ -82,12 +83,12 @@ var UI = (function() {
 	}
 
 	function updateStopwatch() {
-		var stopwatch = document.getElementById(DOMstrings.stopwatch);
+		var stopwatch = document.querySelector(DOMstrings.stopwatch);
 		var time = parseInt(stopwatch.innerText);
 		++time;
 
 		if (time < 1000) {
-			stopwatch.innerText = ('00' + (time)).slice(-3);
+			stopwatch.innerText = ('00' + time).slice(-3);
 		}
 	}
 
@@ -98,19 +99,40 @@ var UI = (function() {
 
 	function resetStopwatch() {
 		stopStopwatch();
-		document.getElementById(DOMstrings.stopwatch).innerText = '000';
+		document.querySelector(DOMstrings.stopwatch).innerText = '000';
+	}
+
+	function updateFlagCounterUI() {
+		if (flagCounter < 0) {
+			var flagCounterUI = ('00' + -flagCounter).slice(-3).split('');
+			flagCounterUI.splice(0, 1, '-');
+			document.querySelector(DOMstrings.flagCounter).innerText = flagCounterUI.join('');
+		} else {
+			document.querySelector(DOMstrings.flagCounter).innerText = ('00' + flagCounter).slice(-3);
+		}
+	}
+
+	function resetFlagCounterUI() {
+		document.querySelector(DOMstrings.flagCounter).innerText = ('000' + flagCounter).slice(-3);
 	}
 
 	function putFlag(squareElement) {
+		flagCounter--;
 		squareElement.classList.add(DOMstrings.flag);
+		updateFlagCounterUI();
 	}
 
 	function removeFlag(squareElement) {
+		flagCounter++;
 		squareElement.classList.remove(DOMstrings.flag);
+		updateFlagCounterUI();
 	}
 
 	function restart() {
 		resetStopwatch();
+		disableFlagEnabled();
+		flagCounter = bombsNumber;
+		resetFlagCounterUI();
 
 		squares.forEach(function(square) {
 			square.textContent = '';
@@ -147,6 +169,10 @@ var UI = (function() {
 	function showEmojiSmile() {
 		hideEmojis();
 		document.getElementById(DOMstrings.emojiSmileId).classList.remove(DOMstrings.hidden);
+	}
+
+	function disableFlagEnabled() {
+		document.querySelector(DOMstrings.enableFlagBtn).classList.remove(DOMstrings.open);
 	}
 
 	return {
