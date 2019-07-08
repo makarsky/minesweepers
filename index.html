@@ -25,14 +25,15 @@
   <main><div class="container"></div></main>
   <footer>
     <div class="control">
-      <button id="hint">?</button>
-      <div style="display:none">
-        The game is played by revealing squares of the grid by clicking or otherwise indicating each square. 
+      <button id="showHint" onclick="this.nextSibling.classList.remove('hidden')">?
+      </button><div id="hint" class="hidden" onclick="this.classList.add('hidden')">
+        <div>X</div>
+        <div>The game is played by revealing squares of the grid by clicking or otherwise indicating each square. 
         If a square containing a mine is revealed, the player loses the game. 
         If no mine is revealed, a digit is instead displayed in the square, indicating how many adjacent squares contain mines; 
         if no mines are adjacent, the square becomes blank, and all adjacent squares will be recursively revealed. 
         The player uses this information to deduce the contents of other squares, 
-        and may either safely reveal each square or mark the square as containing a mine.
+        and may either safely reveal each square or mark the square as containing a mine.</div>
       </div>
     </div>
     <div>Made by Igor Makarsky</div>
