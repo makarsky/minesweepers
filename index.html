@@ -26,14 +26,34 @@
   <footer>
     <div class="control">
       <button id="showHint" onclick="this.nextSibling.classList.remove('hidden')">?
-      </button><div id="hint" class="hidden" onclick="this.classList.add('hidden')">
-        <div>X</div>
-        <div>The game is played by revealing squares of the grid by clicking or otherwise indicating each square. 
-        If a square containing a mine is revealed, the player loses the game. 
-        If no mine is revealed, a digit is instead displayed in the square, indicating how many adjacent squares contain mines; 
-        if no mines are adjacent, the square becomes blank, and all adjacent squares will be recursively revealed. 
-        The player uses this information to deduce the contents of other squares, 
-        and may either safely reveal each square or mark the square as containing a mine.</div>
+      </button><div id="hint" class="popup-container hidden" onclick="this.classList.add('hidden')">
+        <div class="perspective">
+          <div class="popup">
+            <div class="btn btn-close">&#10006;</div>
+            <div>
+              <h2>Controls</h2>
+              <table>
+                <tr>
+                  <td rowspan="2">Mobile</td>
+                  <td>Tap an empty square to reveal it.</td>
+                </tr>
+                <tr>
+                  <td>Long-press an empty square to flag it.</td>
+                </tr>
+                <tr>
+                  <td rowspan="2">Desktop</td>
+                  <td>Left-click an empty square to reveal it.</td>
+                </tr>
+                <tr>
+                  <td>Right-click an empty square to flag it.</td>
+                </tr>
+              </table>
+            </div>
+            <div>
+              <a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Rules on wikipedia</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div>Made by Igor Makarsky</div>
