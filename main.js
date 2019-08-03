@@ -7,7 +7,7 @@ var UI = (function() {
 		flagIcon: 'flag-icon',
 		flagCounter: '#flag-counter',
 		restartBtn: '#restart-btn',
-		container: '.container',
+		container: '.square-container',
 		disabled: 'disabled',
 		stopwatch: '#stopwatch',
 		squareClass: 'square',

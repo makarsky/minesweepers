@@ -1,9 +1,15 @@
+html {
+	overflow: hidden;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Nunito', sans-serif;
 	text-align: center;
 	margin: 0 auto;
+	height: 100%;
+	width: 100%;
 }
 
 header {
@@ -48,7 +54,7 @@ main {
 	border-color: transparent #f44336 transparent transparent;
 }
 
-.container {
+.square-container {
 	line-height: 0;
 	display: inline-block;
 	vertical-align: middle;
@@ -190,7 +196,7 @@ table {
 .popup-container.hidden .popup {
 	transform: rotateX(-90deg);
 	opacity: 0;
-	top: -95px;
+	top: -140px;
 }
 
 .btn-close {
@@ -201,6 +207,12 @@ table {
 	height: 24px;
     width: 24px;
     line-height: 24px;
+}
+
+@media only screen and (orientation: landscape) {
+	body {
+		background-color: #009688;
+	}
 }
 
 @media only screen and (min-width: 640px) {
@@ -219,6 +231,6 @@ table {
 	}
 
 	.popup, .perspective {
-		width: 30vw;
+		width: 70vw;
 	}
 }
