@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="description" content="">
@@ -8,57 +9,72 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:800" rel="stylesheet">
 </head>
+
 <body>
-	<header>
-		<div id="flag-counter" class="control">010</div>
-		<div class="control">
-      <button id="restart-btn" class="square btn">
-        <span id="emoji-cool" class="emoji hidden">&#128526;</span>
-        <span id="emoji-smile" class="emoji">&#128578;</span>
-        <span id="emoji-o" class="emoji hidden">&#128558;</span>
-        <span id="emoji-sad" class="emoji hidden">&#128532;</span>
-      </button>
-    </div>
-		<div class="control"><button id="enable-flag-btn" class="square btn flag-icon"></button></div>
-		<div id="stopwatch" class="control">000</div>
-  </header>
-  <main><div class="square-container"></div></main>
-  <footer>
-    <div class="control">
-      <button id="showHint" onclick="this.nextSibling.classList.remove('hidden')">?
-      </button><div id="hint" class="popup-container hidden" onclick="this.classList.add('hidden')">
-        <div class="perspective">
-          <div class="popup">
-            <div class="btn btn-close">&#10006;</div>
-            <div>
-              <h2>Controls</h2>
-              <table>
-                <tr>
-                  <td rowspan="2">Mobile</td>
-                  <td>Tap an empty square to reveal it.</td>
-                </tr>
-                <tr>
-                  <td>Long-press an empty square to flag it.</td>
-                </tr>
-                <tr>
-                  <td rowspan="2">Desktop</td>
-                  <td>Left-click an empty square to reveal it.</td>
-                </tr>
-                <tr>
-                  <td>Right-click an empty square to flag it.</td>
-                </tr>
-              </table>
-            </div>
-            <div>
-              <a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Rules on wikipedia</a>
+  <div class="container">
+    <div class="app-container">
+      <header class="side flex-item">
+        <div id="flag-counter" class="header-item label">010</div>
+        <div class="header-item">
+          <button id="restart-btn" class="square btn">
+            <span id="emoji-cool" class="emoji emoji--cool hidden">
+            </span>
+            <span id="emoji-smile" class="emoji emoji--smile">
+            </span>
+            <span id="emoji-o" class="emoji emoji--o hidden">
+            </span>
+            <span id="emoji-sad" class="emoji emoji--dead hidden">
+            </span>
+          </button>
+        </div>
+        <div class="header-item">
+          <button id="enable-flag-btn" class="square btn flag-icon"></button>
+        </div>
+        <div id="stopwatch" class="header-item label">000</div>
+      </header>
+      <main class="flex-item">
+        <div class="square-container"></div>
+      </main>
+      <footer class="side flex-item">
+        <div class="button-area">
+          <button id="showHint" class="square btn" onclick="this.nextSibling.nextSibling.classList.remove('hidden')">?
+          </button>
+          <div id="hint" class="popup-container hidden" onclick="this.classList.add('hidden')">
+            <div class="perspective">
+              <div class="popup">
+                <div class="btn btn-close">&#10006;</div>
+                <div>
+                  <h2>Controls</h2>
+                  <table>
+                    <tr>
+                      <td rowspan="2">Mobile</td>
+                      <td>Tap an empty square to reveal it.</td>
+                    </tr>
+                    <tr>
+                      <td>Long-press an empty square to flag it.</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="2">Desktop</td>
+                      <td>Left-click an empty square to reveal it.</td>
+                    </tr>
+                    <tr>
+                      <td>Right-click an empty square to flag it.</td>
+                    </tr>
+                  </table>
+                </div>
+                <div>
+                  <a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Rules on wikipedia</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div class="madeby-area">Made by <a href="https://www.sololearn.com/Profile/779917">Igor Makarsky</a></div>
+      </footer>
     </div>
-    <div>Made by Igor Makarsky</div>
-  </footer>
+  </div>
 
   <script src="main.js"></script>
 </body>
+
 </html>
