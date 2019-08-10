@@ -13,6 +13,7 @@ var UI = (function() {
 		squareClass: 'square',
 		flag: 'flag',
 		bomb: 'square--bomb',
+		exploded: 'square--exploded',
 		open: 'square--open',
 		open0: 'square--open0',
 		open1: 'square--open1',
@@ -44,7 +45,6 @@ var UI = (function() {
 			var square = document.createElement('div');
 			square.classList.add(DOMstrings.squareClass);
 			container.appendChild(square);
-			(i + 1) % Math.sqrt(numberOfSquares) === 0 ? container.innerHTML += '<br>' : null;
 		}
 
 		squares = Array.from(container.getElementsByClassName(DOMstrings.squareClass));
@@ -67,8 +67,7 @@ var UI = (function() {
 				squares[square.index].classList.add(DOMstrings['open' + square.value]);
 				squares[square.index].textContent = square.value;
 			} else if (square.value === 'b') {
-				squares[square.index].classList.add(DOMstrings.bomb);
-				squares[square.index].textContent = square.value;
+				squares[square.index].classList.add(DOMstrings.exploded);
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 				showEmojiSad();
 				stopStopwatch();
