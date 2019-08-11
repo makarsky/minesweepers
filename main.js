@@ -11,7 +11,6 @@ var UI = (function() {
 		disabled: 'disabled',
 		stopwatch: '#stopwatch',
 		squareClass: 'square',
-		flag: 'flag',
 		bomb: 'square--bomb',
 		exploded: 'square--exploded',
 		open: 'square--open',
@@ -116,13 +115,13 @@ var UI = (function() {
 
 	function putFlag(squareElement) {
 		flagCounter--;
-		squareElement.classList.add(DOMstrings.flag);
+		squareElement.classList.add(DOMstrings.flagIcon);
 		updateFlagCounterUI();
 	}
 
 	function removeFlag(squareElement) {
 		flagCounter++;
-		squareElement.classList.remove(DOMstrings.flag);
+		squareElement.classList.remove(DOMstrings.flagIcon);
 		updateFlagCounterUI();
 	}
 
