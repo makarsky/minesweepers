@@ -25,14 +25,14 @@ var UI = (function() {
 		open7: 'square--open7',
 		open8: 'square--open8',
 		emoji: 'emoji',
-		emojiSmileId: 'emoji-smile',
-		emojiCoolId: 'emoji-cool',
-		emojiOId: 'emoji-o',
-		emojiSadId: 'emoji-sad',
+		emojiSmile: 'emoji--smile',
+		emojiCool: 'emoji--cool',
+		emojiO: 'emoji--o',
+		emojiDead: 'emoji--dead',
 		hidden: 'hidden'
 	};
 
-	var emojis = null;
+	var emojiClasses = [DOMstrings.emojiSmile, DOMstrings.emojiCool, DOMstrings.emojiO, DOMstrings.emojiDead];
 	var stopwatchInterval = null;
 	var flagCounter = bombsNumber;
 	var squares = null;
@@ -48,7 +48,6 @@ var UI = (function() {
 		}
 
 		squares = Array.from(container.getElementsByClassName(DOMstrings.squareClass));
-		emojis = Array.from(document.getElementsByClassName(DOMstrings.emoji));
 	}
 
 	function getIndexOfSquare(squareElement) {
@@ -67,9 +66,9 @@ var UI = (function() {
 				squares[square.index].classList.add(DOMstrings['open' + square.value]);
 				squares[square.index].textContent = square.value;
 			} else if (square.value === 'b') {
-				squares[square.index].classList.add(DOMstrings.exploded);
+				squares[square.index].classList.add(DOMstrings.exploded, DOMstrings.emoji);
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-				showEmojiSad();
+				showEmojiDead();
 				stopStopwatch();
 			}
 		});
@@ -145,29 +144,29 @@ var UI = (function() {
 	}
 
 	function hideEmojis() {
-		emojis.forEach(function(emoji) {
-			emoji.classList.add(DOMstrings.hidden);
+		emojiClasses.forEach(function(emojiClass) {
+			document.querySelector(DOMstrings.restartBtn).classList.remove(emojiClass);
 		});
 	}
 
 	function toggleEmojiO() {
-		document.getElementById(DOMstrings.emojiOId).classList.toggle(DOMstrings.hidden);
-		document.getElementById(DOMstrings.emojiSmileId).classList.toggle(DOMstrings.hidden);
+		document.querySelector(DOMstrings.restartBtn).classList.toggle(DOMstrings.emojiO);
+		document.querySelector(DOMstrings.restartBtn).classList.toggle(DOMstrings.emojiSmile);
 	}
 
-	function showEmojiSad(restart) {
+	function showEmojiDead() {
 		hideEmojis();
-		document.getElementById(DOMstrings.emojiSadId).classList.remove(DOMstrings.hidden);
+		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiDead);
 	}
 
 	function showEmojiCool() {
 		hideEmojis();
-		document.getElementById(DOMstrings.emojiCoolId).classList.remove(DOMstrings.hidden);
+		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiCool);
 	}
 
 	function showEmojiSmile() {
 		hideEmojis();
-		document.getElementById(DOMstrings.emojiSmileId).classList.remove(DOMstrings.hidden);
+		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiSmile);
 	}
 
 	function disableFlagEnabled() {
