@@ -105,10 +105,8 @@ main {
 }
 
 .emoji {
-	width: inherit;
-    height: inherit;
 	background-repeat: no-repeat;
-	background-size: 100%;
+	background-size: 75%;
 	background-position: center;
 }
 
@@ -209,16 +207,10 @@ main {
 
 .square--bomb {
 	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f4a3.png');
-	background-repeat: no-repeat;
-	background-size: 80%;
-	background-position: center;
 }
 
 .square--exploded {
 	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f4a5.png');
-	background-repeat: no-repeat;
-	background-size: 80%;
-	background-position: center;
 }
 
 h2 {
