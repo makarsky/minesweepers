@@ -12,7 +12,6 @@ body {
 	font-size: 1em;
 	text-align: center;
 	color: #212121;
-	background-color: #E0E0E0;
 }
 
 .container {
@@ -28,6 +27,7 @@ body {
 	flex-direction: column;
 	height: 100vh;
 	width: 100vw;
+	background-color: #E0E0E0;
 }
 
 .side {
@@ -149,7 +149,7 @@ main {
 	opacity: 0.9;
 }
 
-.square--open {
+.square.square--open {
 	box-shadow: initial;
 	background-color: #EEEEEE;
 	border: .5px solid #1A237E;
@@ -157,10 +157,6 @@ main {
 
 .square--open:hover {
 	opacity: 1;
-}
-
-.square--open:active {
-	box-shadow: initial;
 }
 
 .square--open1 {
@@ -279,12 +275,13 @@ table {
 }
 
 @media only screen and (max-height: 450px) and (orientation: landscape) {
+
 	.app-container {
 		flex-direction: row;
 	}
 
 	header {
-		flex-direction: column;
+		flex-direction: column-reverse;
 		flex-grow: 1;
 	}
 
@@ -299,27 +296,57 @@ table {
 		width: 100vh;
 	}
 
+	.square-container {
+		height: 100vh;
+		width: 100vh;
+		padding-top: 0;
+	}
+
+	.square {
+		font-size: 10vh;
+		width: 11.11vh;
+		height: 11.11vh;
+		box-shadow: 0.5vh 0.5vh 0.5vh 0.5vh #5C6BC0 inset, -0.5vh -0.5vh 0.5vh 0.5vh #283593 inset;
+	}
+
 	.madeby-area {
 		display: none;
 	}
+
+	.flag-icon:after {
+		border-width: 2vh 3vh 2vh 0;
+	}
 }
 
-/* @media only screen and (min-width: 640px) {
+@media only screen and (min-width: 450px) and (min-height: 450px) {
+
+	.app-container {
+		display: flex;
+		height: 480px;
+		width: 320px;
+		border-radius: 6px;
+	}
+
+	.main-item {
+		display: flex;
+		height: 320px;
+		width: 320px;
+	}
+
+	.square-container {
+		height: 320px;
+		width: 320px;
+		padding-top: 0;
+	}
 
 	.square {
-		font-size: 3vw;
-		width: 3vw;
-		height: 3vw;
-		box-shadow: 0.15vw 0.15vw 0.15vw 0.15vw #f1f1f1 inset, -0.15vw -0.15vw 0.15vw 0.15vw #aaa inset;
-		border-radius: 0.3vw;
+		font-size: 32px;
+		width: 35.5px;
+		height: 35.5px;
+		box-shadow: 2px 2px 2px 2px #5C6BC0 inset, -2px -2px 2px 2px #283593 inset;
 	}
-
-	.square--open {
-		box-shadow: initial;
-		background-color: #ccc;
+	
+	.flag-icon:after {
+		border-width: 7px 11px 7px 0;
 	}
-
-	.popup, .perspective {
-		width: 70vw;
-	}
-} */
+}
