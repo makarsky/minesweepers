@@ -483,3 +483,10 @@ var Controller = (function(UIController, GameController) {
 document.addEventListener('DOMContentLoaded', function() {
 	Controller.init();
 });
+
+function toggleHint(e) {
+	var hints = document.querySelectorAll('.hint');
+	hints[0].classList.toggle('hidden');
+	hints[1].classList.toggle('hidden');
+	e.stopPropagation();
+}
