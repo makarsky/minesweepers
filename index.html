@@ -28,13 +28,13 @@
       </main>
       <footer class="side flex-item">
         <div class="button-area">
-          <button id="showHint" class="square btn" onclick="this.nextSibling.nextSibling.classList.remove('hidden')">?
+          <button class="square btn" onclick="this.nextSibling.nextSibling.classList.remove('hidden')">?
           </button>
-          <div id="hint" class="popup-container hidden" onclick="this.classList.add('hidden')">
+          <div class="popup-container hidden" onclick="this.classList.add('hidden')">
             <div class="perspective">
               <div class="popup">
                 <div class="btn btn-close">&#10006;</div>
-                <div>
+                <div class="hint">
                   <h2>Controls</h2>
                   <table>
                     <tr>
@@ -52,9 +52,20 @@
                       <td>Right-click an empty square to flag it.</td>
                     </tr>
                   </table>
+                  <br>
+                  <div>
+                    <a href="#" onclick="toggleHint(event)">Rules</a>
+                  </div>
                 </div>
-                <div>
-                  <a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Rules on wikipedia</a>
+
+                <div class="hint hidden">
+                  <h2>Rules</h2>
+                  <p>
+                    The game is played by revealing squares of the grid by clicking or otherwise indicating each square. If a square containing a mine is revealed, the player loses the game. If no mine is revealed, a digit is instead displayed in the square, indicating how many adjacent squares contain mines; if no mines are adjacent, the square becomes blank, and all adjacent squares will be recursively revealed. The player uses this information to deduce the contents of other squares, and may either safely reveal each square or mark the square as containing a mine.
+                  </p>
+                  <div>
+                    <a href="#" onclick="toggleHint(event)">Controls</a>
+                  </div>
                 </div>
               </div>
             </div>

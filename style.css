@@ -209,7 +209,11 @@ main {
 }
 
 h2 {
-	margin: 6px;
+	margin: 0;
+}
+
+p {
+	margin: 6px 0;
 }
 
 table {
@@ -232,12 +236,14 @@ table {
 }
 
 .perspective {
+	display: flex;
+    align-items: center;
+    justify-content: center;
 	position: relative;
 	margin: 0 auto;
-	width: 93vw;
-	height: 70vh;
-	-webkit-perspective: 1000px;
-	perspective: 1000px;
+	height: 95vh;
+	/* -webkit-perspective: 1000px;
+	perspective: 1000px;  */
 	transition: height .6s;
 }
 
@@ -246,15 +252,14 @@ table {
 }
 
 .popup {
-	position: absolute;
 	background: white;
 	border-radius: 12px;
-	padding: 6px;
-	transform-style: preserve-3d;
+	padding: 12px;
+	/* transform-style: preserve-3d; */
 	transform: rotateX(0deg);
 	opacity: 1;
-	transition: transform .2s ease-in-out, opacity .2s ease-in-out, top .3s ease-in-out;
-	top: 0;
+	transition: transform .2s ease-in-out, opacity .15s ease-in-out, top .3s ease-in-out;
+	width: 90vw;
 }
 
 .popup-container.hidden .popup {
@@ -324,7 +329,7 @@ table {
 		display: flex;
 		height: 480px;
 		width: 320px;
-		border-radius: 6px;
+		border-radius: 12px;
 	}
 
 	.main-item {
@@ -348,5 +353,9 @@ table {
 	
 	.flag-icon:after {
 		border-width: 7px 11px 7px 0;
+	}
+
+	.popup {
+		width: 284px;
 	}
 }
