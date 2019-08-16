@@ -337,7 +337,7 @@ table {
 	.square-container {
 		height: 320px;
 		width: 320px;
-		padding-top: 0;
+		padding: 1px 0;
 	}
 
 	.square {
