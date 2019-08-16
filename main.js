@@ -381,7 +381,6 @@ var Controller = (function(UIController, GameController) {
 
 	function setupEventListeners() {
         document.querySelector(DOM.enableFlagBtn).addEventListener('click', toggleFlagEnabled);
-		// document.querySelector(DOM.container).addEventListener('click', handleSquare);
 		setupTapAndHold();
 		document.querySelector(DOM.container).addEventListener('contextmenu', toggleFlag);
 		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
@@ -391,19 +390,35 @@ var Controller = (function(UIController, GameController) {
 
 	function setupTapAndHold() {
 		var holdStart;
-		document.querySelector(DOM.container).addEventListener('mousedown', function(e) {
-			if (e.button === 0) {
-				holdStart = new Date();
-				UIController.toggleEmojiO();
-			}
+
+		document.querySelector(DOM.container).addEventListener('touchstart', function(e) {
+			document.querySelector(DOM.container).removeEventListener('contextmenu', toggleFlag);
+			document.querySelector(DOM.container).removeEventListener('mousedown', mousedown);
+			document.querySelector(DOM.container).removeEventListener('mouseup', mouseup);
+			
+			holdStart = new Date();
+			UIController.toggleEmojiO();
 		});
-		document.querySelector(DOM.container).addEventListener('mouseup', function(e) {
-			if (e.button === 0) {
-				var diff = new Date() - holdStart;
-				UIController.toggleEmojiO();
-				diff > 300 ? toggleFlag(e) : handleSquare(e);
-			}
+		document.querySelector(DOM.container).addEventListener('touchend', function(e) {
+			var diff = new Date() - holdStart;
+			UIController.toggleEmojiO();
+			diff > 300 ? toggleFlag(e) : handleSquare(e);
 		});
+
+		document.querySelector(DOM.container).addEventListener('mousedown', mousedown);
+		document.querySelector(DOM.container).addEventListener('mouseup', mouseup);
+	}
+
+	function mousedown(e) {
+		if (e.button === 0) {
+			UIController.toggleEmojiO();
+		}
+	}
+	function mouseup(e) {
+		if (e.button === 0) {
+			UIController.toggleEmojiO();
+			handleSquare(e);
+		}
 	}
 
 	function init() {
