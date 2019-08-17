@@ -5,6 +5,7 @@ var UI = (function() {
 	var DOMstrings = {
 		enableFlagBtn: '#enable-flag-btn',
 		flagIcon: 'flag-icon',
+		flagIconBroken: 'flag-icon--broken',
 		flagCounter: '#flag-counter',
 		restartBtn: '#restart-btn',
 		container: '.square-container',
@@ -59,16 +60,29 @@ var UI = (function() {
 		}
 
 		squareData.forEach(function(square) {
-			squares[square.index].classList.add(DOMstrings.open);
+			var squareElement = squares[square.index];
+			squareElement.classList.add(DOMstrings.open);
 
 			if (typeof (square.value) === 'number' && square.value > 0) {
-				squares[square.index].classList.add(DOMstrings['open' + square.value]);
-				squares[square.index].textContent = square.value;
+				squareElement.classList.add(DOMstrings['open' + square.value]);
+				squareElement.textContent = square.value;
 			} else if (square.value === 'b') {
-				squares[square.index].classList.add(DOMstrings.exploded, DOMstrings.emoji);
+				squareElement.classList.add(DOMstrings.exploded, DOMstrings.emoji);
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 				showEmojiDead();
 				stopStopwatch();
+			}
+		});
+	}
+
+	function showFlagAndBombValidation(bombsAndWrongFlags) {
+		bombsAndWrongFlags.forEach(function(square) {
+			var squareElement = squares[square.index];
+
+			if (square.value === 'b') {
+				squareElement.classList.add(DOMstrings.bomb, DOMstrings.emoji);
+			} else if (square.value === 'f') {
+				squareElement.classList.add(DOMstrings.flagIconBroken);
 			}
 		});
 	}
@@ -133,10 +147,7 @@ var UI = (function() {
 
 		squares.forEach(function(square) {
 			square.textContent = '';
-			Array.from(square.classList).forEach(function(className) {
-				square.classList.remove(className);
-			});
-			square.classList.add(DOMstrings.squareClass);
+			square.className = DOMstrings.squareClass;
 		});
 		document.querySelector(DOMstrings.container).classList.remove(DOMstrings.disabled)
 		showEmojiSmile();
@@ -186,7 +197,8 @@ var UI = (function() {
 		},
 		restart,
 		toggleEmojiO,
-		showWin
+		showWin,
+		showFlagAndBombValidation
 	};
 })();
 
@@ -285,15 +297,11 @@ var Game = (function() {
 	}
 
 	function putFlag(index, row, col) {
-		flags.push({index, row, col});
+		flags.push({value: 'f', index, row, col});
 	}
 
 	function removeFlag(index) {
 		flags = flags.filter(function(el) {return el.index !== index;});
-	}
-
-	function handleSquare(index) {
-		return openSquaresByIndex(index);
 	}
 
 	function openSquaresByIndex(i) {
@@ -313,7 +321,11 @@ var Game = (function() {
 		square.isOpen = true;
 		var squaresToOpen = [{index: i, value: square.value}];
 
-		if (square.value === 'b' || square.value !== 0) {
+		if (square.value === 'b') {
+			document.dispatchEvent(new Event('gameOver'));
+			return squaresToOpen;
+		}
+		if (square.value !== 0) {
 			return squaresToOpen;
 		}
 
@@ -357,6 +369,28 @@ var Game = (function() {
 		}) && (flags.length === bombsNumber);
 	}
 
+	function getFlagAndBombValidation() {
+		var bombs = [];
+		var bombIndeces = [];
+
+		squares.forEach(function(row, i) {
+			row.forEach(function(square, j) {
+				if (square.value === 'b') {
+					var bomb = {value: 'b', index: getSquareIndexByCoords ({row: i, col: j})}
+					var isFlagged = flags.some(function(flag) { return flag.index === bomb.index; });
+					
+					if (!isFlagged) {
+						bombs.push(bomb);
+					}
+					bombIndeces.push(bomb.index);
+				}
+			});
+		});
+
+		var wrongFlags = flags.filter(function(flag) { return bombIndeces.indexOf(flag.index) === -1; });
+		return bombs.concat(wrongFlags);
+	}
+
 	return {
 		init,
 		putFlag,
@@ -367,10 +401,11 @@ var Game = (function() {
 			return isFlagEnabled;
 		},
 		toggleFlag,
-		handleSquare,
+		openSquaresByIndex,
 		restart,
 		areAllSafeSquaresOpened,
-		areAllFlagsCorrect
+		areAllFlagsCorrect,
+		getFlagAndBombValidation
 	};
 })();
 
@@ -386,6 +421,7 @@ var Controller = (function(UIController, GameController) {
 		document.querySelector(DOM.restartBtn).addEventListener('click', restart);
 		document.addEventListener('checkIfWinByOpenedSquares', checkIfWinByOpenedSquares);
 		document.addEventListener('checkIfWinByFlag', checkIfWinByFlag);
+		document.addEventListener('gameOver', showFlagAndBombValidation);
 	}
 
 	function setupTapAndHold() {
@@ -445,7 +481,7 @@ var Controller = (function(UIController, GameController) {
 		var index = UIController.getIndexOfSquare(event.target);
 
 		/** [{index: 1, value: 'b'||0||5}] */
-		var squareData = GameController.handleSquare(index);
+		var squareData = GameController.openSquaresByIndex(index);
 
 		if (squareData) {
 			UIController.openSquares(squareData);
@@ -488,6 +524,11 @@ var Controller = (function(UIController, GameController) {
 		if (GameController.areAllFlagsCorrect()) {
 			UIController.showWin();
 		}
+	}
+
+	function showFlagAndBombValidation() {
+		var squares = GameController.getFlagAndBombValidation();
+		UIController.showFlagAndBombValidation(squares);
 	}
 
 	return {

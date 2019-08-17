@@ -41,6 +41,7 @@ main {
 	display: flex;
 	text-align: center;
 	background-color: #1A237E;
+	border-radius: 6px;
 }
 
 .header-item {
@@ -81,6 +82,10 @@ main {
 	background-color: #EEEEEE;
 }
 
+.flag-icon--broken:before {
+	transform: translateX(-.5vw) rotate(20deg);
+}
+
 .square--open.flag-icon:before {
 	background-color: #212121;
 }
@@ -92,12 +97,17 @@ main {
 .flag-icon:after {
 	content: "";
 	position: absolute;
-	top: 15%;
+	top: 16%;
 	right: 40%;
 	display: block;
 	border-style: solid;
 	border-width: 2vw 3vw 2vw 0;
 	border-color: transparent #f44336 transparent transparent;
+}
+
+.flag-icon--broken:after {
+	transform: translateX(-.5vw) rotate(20deg) translateX(4.2vw) rotateY(160deg);
+	border-color: transparent #212121 transparent transparent;
 }
 
 .disabled {
@@ -142,7 +152,7 @@ main {
 	background-color: #3F51B5;
 	box-shadow: 0.5vw 0.5vw 0.5vw 0.5vw #5C6BC0 inset, -0.5vw -0.5vw 0.5vw 0.5vw #283593 inset;
 	border-radius: 12%;
-	/* transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out; */
+	/* transition: box-shadow .1s ease-in-out, background-color .1s ease-in-out; */
 }
 
 .square:hover {
@@ -283,12 +293,10 @@ table {
 
 	header {
 		flex-direction: column-reverse;
-		flex-grow: 1;
 	}
 
 	footer {
 		flex-direction: column;
-		flex-grow: 1;
 	}
 
 	.main-item {
@@ -300,7 +308,7 @@ table {
 	.square-container {
 		height: 100vh;
 		width: 100vh;
-		padding-top: 0;
+		padding: 0 1px;
 	}
 
 	.square {
@@ -316,6 +324,14 @@ table {
 
 	.flag-icon:after {
 		border-width: 2vh 3vh 2vh 0;
+	}
+
+	.flag-icon--broken:before {
+		transform: translateX(-.5vh) rotate(20deg);
+	}
+	
+	.flag-icon--broken:after {
+		transform: translateX(-.5vh) rotate(20deg) translateX(4.2vh) rotateY(160deg);
 	}
 }
 
@@ -348,10 +364,18 @@ table {
 	}
 	
 	.flag-icon:after {
-		border-width: 7px 11px 7px 0;
+		border-width: 7px 10px 7px 0;
 	}
 
 	.popup {
 		width: 284px;
+	}
+
+	.flag-icon--broken:before {
+		transform: translateX(-4px) rotate(20deg);
+	}
+	
+	.flag-icon--broken:after {
+		transform: translateX(-4px) rotate(20deg) translateX(14px) rotateY(160deg);
 	}
 }
