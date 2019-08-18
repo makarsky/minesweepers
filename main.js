@@ -322,7 +322,6 @@ var Game = (function() {
 		var squaresToOpen = [{index: i, value: square.value}];
 
 		if (square.value === 'b') {
-			document.dispatchEvent(new Event('gameOver'));
 			return squaresToOpen;
 		}
 		if (square.value !== 0) {
@@ -413,6 +412,7 @@ var Game = (function() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Controller = (function(UIController, GameController) {
 	var DOM = UIController.getDOMstrings();
+	var firstReveal = true;
 
 	function setupEventListeners() {
         document.querySelector(DOM.enableFlagBtn).addEventListener('click', toggleFlagEnabled);
@@ -469,7 +469,11 @@ var Controller = (function(UIController, GameController) {
 	}
 
 	function handleSquare(event) {
-        if (!event.target.classList.contains(DOM.squareClass)) {
+		if (
+			!event.target.classList.contains(DOM.squareClass)
+			|| event.target.classList.contains(DOM.open)
+			|| event.target.classList.contains(DOM.flagIcon)
+		) {
 			return;
 		}
 
@@ -483,6 +487,16 @@ var Controller = (function(UIController, GameController) {
 		/** [{index: 1, value: 'b'||0||5}] */
 		var squareData = GameController.openSquaresByIndex(index);
 
+		if (squareData[0].value === 'b' && firstReveal) {
+			GameController.init();
+			handleSquare(event);
+			return;
+		} else if (squareData[0].value === 'b') {
+			document.dispatchEvent(new Event('gameOver'));
+		}
+
+		firstReveal = false;
+
 		if (squareData) {
 			UIController.openSquares(squareData);
 		}
@@ -491,6 +505,7 @@ var Controller = (function(UIController, GameController) {
 	};
 	
 	function restart() {
+		firstReveal = true;
 		GameController.restart();
 		UIController.restart();
 	}
