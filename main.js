@@ -233,7 +233,7 @@ var Game = (function() {
 			incrementAdjacentSquares(randomRow, randomCol);
 		}
 		// helps with debugging
-		// console.table(squares.map((i) => i.map(j => j.value)));
+		console.table(squares.map((i) => i.map(j => j.value)));
 	}
 
 	function incrementAdjacentSquares(row, col) {
@@ -472,7 +472,6 @@ var Controller = (function(UIController, GameController) {
 		if (
 			!event.target.classList.contains(DOM.squareClass)
 			|| event.target.classList.contains(DOM.open)
-			|| event.target.classList.contains(DOM.flagIcon)
 		) {
 			return;
 		}
@@ -536,7 +535,7 @@ var Controller = (function(UIController, GameController) {
 	}
 
 	function checkIfWinByFlag() {
-		if (GameController.areAllFlagsCorrect()) {
+		if (GameController.areAllFlagsCorrect() && !firstReveal) {
 			UIController.showWin();
 		}
 	}
