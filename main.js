@@ -233,7 +233,7 @@ var Game = (function() {
 			incrementAdjacentSquares(randomRow, randomCol);
 		}
 		// helps with debugging
-		console.table(squares.map((i) => i.map(j => j.value)));
+		// console.table(squares.map((i) => i.map(j => j.value)));
 	}
 
 	function incrementAdjacentSquares(row, col) {
@@ -478,6 +478,9 @@ var Controller = (function(UIController, GameController) {
 
 		if (GameController.isFlagEnabled()) {
 			toggleFlag(event);
+			return;
+		}
+		if (event.target.classList.contains(DOM.flagIcon)) {
 			return;
 		}
 
