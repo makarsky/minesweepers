@@ -1,5 +1,7 @@
 html {
 	overflow: hidden;
+	/* Disable text selection */
+	user-select: none;
 }
 
 a {
@@ -59,16 +61,10 @@ main {
 .square-container {
 	height: 100vw;
 	width: 100vw;
-	/* Disable text selection */
-	user-select: none;
 	padding-top: 3px;
 }
 
 .button-area {
-	margin: auto;
-}
-
-.madeby-area {
 	margin: auto;
 }
 
@@ -321,10 +317,6 @@ table {
 		width: 11.11vh;
 		height: 11.11vh;
 		box-shadow: 0.5vh 0.5vh 0.5vh 0.5vh #5C6BC0 inset, -0.5vh -0.5vh 0.5vh 0.5vh #283593 inset;
-	}
-
-	.madeby-area {
-		display: none;
 	}
 
 	.flag-icon:after {
