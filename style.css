@@ -1,5 +1,7 @@
 html {
 	overflow: hidden;
+	/* Disable text selection */
+	user-select: none;
 }
 
 a {
@@ -59,8 +61,6 @@ main {
 .square-container {
 	height: 100vw;
 	width: 100vw;
-	/* Disable text selection */
-	user-select: none;
 	padding-top: 3px;
 }
 
