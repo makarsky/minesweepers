@@ -206,6 +206,7 @@ main {
 .btn {
 	outline: none;
 	border: none;
+	appearance: none;
 	cursor: pointer;
 	height: 11vw;
 	width: 11vw;
