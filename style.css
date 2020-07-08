@@ -211,6 +211,7 @@ main {
 	height: 11vw;
 	width: 11vw;
 	color: #EEEEEE;
+	user-select: none;
 }
 
 .square--bomb {
