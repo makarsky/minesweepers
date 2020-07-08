@@ -206,16 +206,11 @@ main {
 .btn {
 	outline: none;
 	border: none;
-	appearance: none;
 	cursor: pointer;
 	height: 11vw;
 	width: 11vw;
 	color: #EEEEEE;
-	user-select: none;
-}
-
-.btn:focus {
-	outline: none !important;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .square--bomb {
