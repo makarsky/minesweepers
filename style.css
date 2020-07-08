@@ -214,6 +214,10 @@ main {
 	user-select: none;
 }
 
+.btn:focus {
+	outline: none !important;
+}
+
 .square--bomb {
 	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f4a3.png');
 }
