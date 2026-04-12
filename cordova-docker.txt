@@ -1,0 +1,17 @@
+Useful links
+https://www.minetest.net/
+https://hub.docker.com/r/beevelop/cordova
+https://github.com/beevelop/docker-cordova/blob/master/Dockerfile
+https://www.google.com/search?client=ubuntu&channel=fs&q=beevelop%2Fdocker-cordova&ie=utf-8&oe=utf-8
+http://www.linux-magazine.com/Issues/2018/215/Tutorials-Docker/(offset)/3/(tagID)/337
+https://medium.com/@cnadeau_/docker-as-a-cordova-android-application-builder-9e292298c08e
+https://stackoverflow.com/questions/43448888/cordova-requirements-issue-android-target-not-installed
+https://linoxide.com/linux-how-to/install-android-sdk-manager-ubuntu/
+https://dev.to/gpenverne/a-github-template-for-your-cordova-and-electron-projects-599d
+https://github.com/search?p=2&q=cordova-docker&type=Repositories
+https://github.com/beyondspider/docker-cordova/blob/master/Dockerfile
+https://github.com/Dragomitch/dockerisationCordova/blob/master/Dockerfile
+https://github.com/gpenverne/electron-docker-project
+https://stackoverflow.com/questions/55020954/android-sdk-licenses
+
+
