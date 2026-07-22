@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper Icon</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:800" rel="stylesheet">
+  <style>
+    :root {
+      --canvas-size: 512px;
+      --content-ratio: 1;
+      --icon-size: calc(var(--canvas-size) * var(--content-ratio));
+      --square-size: calc(var(--icon-size) / 3);
+      --bevel: calc(var(--icon-size) * 0.01875);
+      --flag-border-y: calc(var(--icon-size) * 0.065);
+      --flag-border-x: calc(var(--icon-size) * 0.094);
+      --main-radius: calc(var(--icon-size) * 0.02);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow: hidden;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    html,
+    body {
+      width: var(--canvas-size);
+      height: var(--canvas-size);
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1em;
+      text-align: center;
+      color: #212121;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    main {
+      display: flex;
+      width: var(--icon-size);
+      height: var(--icon-size);
+      text-align: center;
+      background: transparent;
+      border-radius: var(--main-radius);
+      overflow: hidden;
+    }
+
+    .square-container {
+      width: 100%;
+      height: 100%;
+      font-size: 0;
+      line-height: 0;
+    }
+
+    .flag-icon:before {
+      content: "";
+      position: absolute;
+      top: 15%;
+      right: 34%;
+      display: block;
+      height: 70%;
+      width: 6%;
+      background-color: #EEEEEE;
+    }
+
+    .square.flag-icon {
+      position: relative;
+    }
+
+    .flag-icon:after {
+      content: "";
+      position: absolute;
+      top: 16%;
+      right: 40%;
+      display: block;
+      border-style: solid;
+      border-width: var(--flag-border-y) var(--flag-border-x) var(--flag-border-y) 0;
+      border-color: transparent #f44336 transparent transparent;
+    }
+
+    .square {
+      justify-content: center;
+      align-items: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: calc(var(--square-size) * 0.9);
+      font-weight: 800;
+      vertical-align: middle;
+      width: 33.333%;
+      height: 33.333%;
+      display: inline-flex;
+      background-color: #3F51B5;
+      box-shadow:
+        var(--bevel) var(--bevel) var(--bevel) var(--bevel) #5C6BC0 inset,
+        calc(var(--bevel) * -1) calc(var(--bevel) * -1) var(--bevel) var(--bevel) #283593 inset;
+      border-radius: 12%;
+    }
+
+    .square.square--open {
+      box-shadow: initial;
+      background-color: #EEEEEE;
+      border: calc(var(--icon-size) * 0.0015) solid #1A237E;
+    }
+
+    .square--open1 {
+      color: #3F51B5;
+    }
+
+    .square--open2 {
+      color: #4CAF50;
+    }
+
+    .square--open3 {
+      color: #f44336;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="flex-item">
+    <div class="square-container">
+      <div class="square"></div>
+      <div class="square square--open square--open1">1</div>
+      <div class="square"></div>
+      <div class="square square--open square--open1">1</div>
+      <div class="square flag-icon"></div>
+      <div class="square square--open square--open3">3</div>
+      <div class="square"></div>
+      <div class="square square--open square--open2">2</div>
+      <div class="square"></div>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var size = params.get('size');
+      var contentRatio = params.get('contentRatio');
+
+      if (size) {
+        document.documentElement.style.setProperty('--canvas-size', size + 'px');
+      }
+      if (contentRatio) {
+        document.documentElement.style.setProperty('--content-ratio', contentRatio);
+      }
+    })();
+  </script>
+</body>
+
+</html>
