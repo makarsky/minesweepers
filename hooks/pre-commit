@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Regenerates sw.js ASSETS / CACHE_NAME and stages the result.
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+
+./scripts/sync-sw-assets.sh --write
+git add sw.js
