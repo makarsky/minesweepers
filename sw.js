@@ -1,17 +1,19 @@
 /* sync-sw-assets:start */
-const CACHE_NAME = 'minesweeper-f07216e';
+const CACHE_NAME = 'minesweeper-1d04be1';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './main.js',
   './manifest.webmanifest',
-  './icons/apple-touch-icon.png',
-  './icons/favicon-32.png',
-  './icons/icon-192-maskable.png',
-  './icons/icon-192.png',
-  './icons/icon-512-maskable.png',
-  './icons/icon-512.png',
+  './app-icons/apple-touch-icon.png',
+  './app-icons/favicon-32.png',
+  './app-icons/icon-192-maskable.png',
+  './app-icons/icon-192.png',
+  './app-icons/icon-512-maskable.png',
+  './app-icons/icon-512.png',
+  './assets/explosion.svg',
+  './assets/sea-mine.svg',
 ];
 /* sync-sw-assets:end */
 

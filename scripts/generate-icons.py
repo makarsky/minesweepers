@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate PWA icons from icon.html and replace files under icons/.
+"""Generate PWA icons from icon.html and replace files under app-icons/.
 
 Renders the <main> board at each target size via headless Chrome (Playwright),
 then writes the PNGs referenced by manifest.webmanifest and index.html.
@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ICON_HTML = ROOT / "icon.html"
-ICONS_DIR = ROOT / "icons"
+ICONS_DIR = ROOT / "app-icons"
 VENV_DIR = ROOT / ".venv-icons"
 
 # (filename, size_px, content_ratio)

@@ -130,22 +130,6 @@ main {
 	background-position: center;
 }
 
-.emoji--smile {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f642.png');
-}
-
-.emoji--cool {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f60e.png');
-}
-
-.emoji--o {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f632.png');
-}
-
-.emoji--dead {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f480.png');
-}
-
 .square {
 	justify-content: center;
 	align-items: center;
@@ -216,12 +200,18 @@ main {
 	color: #EEEEEE;
 }
 
+.btn--text {
+	width: auto;
+	padding: 0 6px;
+	font-size: 3.5vw;
+}
+
 .square--bomb {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f4a3.png');
+	background-image: url('assets/sea-mine.svg');
 }
 
 .square--exploded {
-	background-image: url('https://cdn.jsdelivr.net/emojione/assets/5.0/png/unicode/64/1f4a5.png');
+	background-image: url('assets/explosion.svg');
 }
 
 h2 {
@@ -328,6 +318,12 @@ table {
 		box-shadow: 0.5vh 0.5vh 0.5vh 0.5vh #5C6BC0 inset, -0.5vh -0.5vh 0.5vh 0.5vh #283593 inset;
 	}
 
+	.btn--text {
+		width: auto;
+		padding: 0 6px;
+		font-size: 3.5vh;
+	}
+
 	.flag-icon:after {
 		border-width: 2vh 3vh 2vh 0;
 	}
@@ -371,6 +367,12 @@ table {
 		width: 35.5px;
 		height: 35.5px;
 		box-shadow: 2px 2px 2px 2px #5C6BC0 inset, -2px -2px 2px 2px #283593 inset;
+	}
+
+	.btn--text {
+		width: auto;
+		padding: 0 12px;
+		font-size: 14px;
 	}
 	
 	.flag-icon:after {

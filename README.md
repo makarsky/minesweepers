@@ -31,7 +31,7 @@ On every commit, `hooks/pre-commit`:
 2. Sets `CACHE_NAME` to `minesweeper-<short-HEAD>` (`HEAD` at hook time is the
    parent of the commit being created)
 3. Rebuilds `ASSETS` from `index.html`, `style.css`, `main.js`,
-   `manifest.webmanifest`, and every file in `icons/`
+   `manifest.webmanifest`, every file in `app-icons/`, and every file in `assets/`
 4. Stages `sw.js` so the commit includes the updated file
 
 ### Manual commands
@@ -49,4 +49,4 @@ On every commit, `hooks/pre-commit`:
 1. Update `icon.html`
 2. Preview any size in a browser: `icon.html?size=512` or `icon.html?size=512&contentRatio=0.8`
 3. Run `python3 scripts/generate-icons.py`
-4. Commit — the pre-commit hook will pick up new files under `icons/`
+4. Commit — the pre-commit hook will pick up new files under `app-icons/`

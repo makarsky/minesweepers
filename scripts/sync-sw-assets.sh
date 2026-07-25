@@ -32,21 +32,23 @@ for name in index.html style.css main.js manifest.webmanifest; do
   assets+=("./$name")
 done
 
-if [[ ! -d "$ROOT/icons" ]]; then
-  echo "Missing icons/ directory" >&2
-  exit 1
-fi
+for dir in app-icons assets; do
+  if [[ ! -d "$ROOT/$dir" ]]; then
+    echo "Missing $dir/ directory" >&2
+    exit 1
+  fi
 
-icon_count=0
-while IFS= read -r icon; do
-  assets+=("./icons/$(basename "$icon")")
-  icon_count=$((icon_count + 1))
-done < <(find "$ROOT/icons" -maxdepth 1 -type f ! -name '.*' | sort)
+  file_count=0
+  while IFS= read -r file; do
+    assets+=("./$dir/$(basename "$file")")
+    file_count=$((file_count + 1))
+  done < <(find "$ROOT/$dir" -maxdepth 1 -type f ! -name '.*' | sort)
 
-if [[ "$icon_count" -eq 0 ]]; then
-  echo "No files found in icons/" >&2
-  exit 1
-fi
+  if [[ "$file_count" -eq 0 ]]; then
+    echo "No files found in $dir/" >&2
+    exit 1
+  fi
+done
 
 expected_assets="$(printf '%s\n' "${assets[@]}")"
 

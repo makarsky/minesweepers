@@ -25,14 +25,9 @@ var UI = (function() {
 		open7: 'square--open7',
 		open8: 'square--open8',
 		emoji: 'emoji',
-		emojiSmile: 'emoji--smile',
-		emojiCool: 'emoji--cool',
-		emojiO: 'emoji--o',
-		emojiDead: 'emoji--dead',
 		hidden: 'hidden'
 	};
 
-	var emojiClasses = [DOMstrings.emojiSmile, DOMstrings.emojiCool, DOMstrings.emojiO, DOMstrings.emojiDead];
 	var stopwatchInterval = null;
 	var flagCounter = bombsNumber;
 	var squares = null;
@@ -69,7 +64,6 @@ var UI = (function() {
 			} else if (square.value === 'b') {
 				squareElement.classList.add(DOMstrings.exploded, DOMstrings.emoji);
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-				showEmojiDead();
 				stopStopwatch();
 			}
 		});
@@ -90,7 +84,6 @@ var UI = (function() {
 	function showWin() {
 		stopStopwatch();
 		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-		showEmojiCool();
 	}
 
 	function updateStopwatch() {
@@ -150,33 +143,6 @@ var UI = (function() {
 			square.className = DOMstrings.squareClass;
 		});
 		document.querySelector(DOMstrings.container).classList.remove(DOMstrings.disabled)
-		showEmojiSmile();
-	}
-
-	function hideEmojis() {
-		emojiClasses.forEach(function(emojiClass) {
-			document.querySelector(DOMstrings.restartBtn).classList.remove(emojiClass);
-		});
-	}
-
-	function toggleEmojiO() {
-		document.querySelector(DOMstrings.restartBtn).classList.toggle(DOMstrings.emojiO);
-		document.querySelector(DOMstrings.restartBtn).classList.toggle(DOMstrings.emojiSmile);
-	}
-
-	function showEmojiDead() {
-		hideEmojis();
-		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiDead);
-	}
-
-	function showEmojiCool() {
-		hideEmojis();
-		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiCool);
-	}
-
-	function showEmojiSmile() {
-		hideEmojis();
-		document.querySelector(DOMstrings.restartBtn).classList.add(DOMstrings.emojiSmile);
 	}
 
 	function disableFlagEnabled() {
@@ -196,7 +162,6 @@ var UI = (function() {
 			document.querySelector(DOMstrings.enableFlagBtn).classList.toggle(DOMstrings.open);
 		},
 		restart,
-		toggleEmojiO,
 		showWin,
 		showFlagAndBombValidation
 	};
@@ -429,30 +394,20 @@ var Controller = (function(UIController, GameController) {
 
 		document.querySelector(DOM.container).addEventListener('touchstart', function(e) {
 			document.querySelector(DOM.container).removeEventListener('contextmenu', toggleFlag);
-			document.querySelector(DOM.container).removeEventListener('mousedown', mousedown);
 			document.querySelector(DOM.container).removeEventListener('mouseup', mouseup);
 			
 			holdStart = new Date();
-			UIController.toggleEmojiO();
 		});
 		document.querySelector(DOM.container).addEventListener('touchend', function(e) {
 			var diff = new Date() - holdStart;
-			UIController.toggleEmojiO();
 			diff > 300 ? toggleFlag(e) : handleSquare(e);
 		});
 
-		document.querySelector(DOM.container).addEventListener('mousedown', mousedown);
 		document.querySelector(DOM.container).addEventListener('mouseup', mouseup);
 	}
 
-	function mousedown(e) {
-		if (e.button === 0) {
-			UIController.toggleEmojiO();
-		}
-	}
 	function mouseup(e) {
 		if (e.button === 0) {
-			UIController.toggleEmojiO();
 			handleSquare(e);
 		}
 	}
