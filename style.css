@@ -200,10 +200,8 @@ main {
 	color: #EEEEEE;
 }
 
-.btn--text {
-	width: auto;
-	padding: 0 6px;
-	font-size: 3.5vw;
+#restart-btn {
+	background-image: url('assets/restart.svg');
 }
 
 .square--bomb {
@@ -318,12 +316,6 @@ table {
 		box-shadow: 0.5vh 0.5vh 0.5vh 0.5vh #5C6BC0 inset, -0.5vh -0.5vh 0.5vh 0.5vh #283593 inset;
 	}
 
-	.btn--text {
-		width: auto;
-		padding: 0 6px;
-		font-size: 3.5vh;
-	}
-
 	.flag-icon:after {
 		border-width: 2vh 3vh 2vh 0;
 	}
@@ -367,12 +359,6 @@ table {
 		width: 35.5px;
 		height: 35.5px;
 		box-shadow: 2px 2px 2px 2px #5C6BC0 inset, -2px -2px 2px 2px #283593 inset;
-	}
-
-	.btn--text {
-		width: auto;
-		padding: 0 12px;
-		font-size: 14px;
 	}
 	
 	.flag-icon:after {
