@@ -77,43 +77,19 @@ main {
 	margin: auto;
 }
 
-.flag-icon:before {
-	content: "";
-	position: absolute;
-	top: 15%;
-	right: 34%;
-	display: block;
-	height: 70%;
-	width: 6%;
-	background-color: #EEEEEE;
+.flag-icon {
+	background-image: url('assets/flag.svg');
+	background-repeat: no-repeat;
+	background-size: 75%;
+	background-position: center;
 }
 
-.flag-icon--broken:before {
-	transform: translateX(-.5vw) rotate(20deg);
+.square--open.flag-icon {
+	background-image: url('assets/flag-dark.svg');
 }
 
-.square--open.flag-icon:before {
-	background-color: #212121;
-}
-
-.square.flag-icon {
-	position: relative;
-}
-
-.flag-icon:after {
-	content: "";
-	position: absolute;
-	top: 16%;
-	right: 40%;
-	display: block;
-	border-style: solid;
-	border-width: 2vw 3vw 2vw 0;
-	border-color: transparent #f44336 transparent transparent;
-}
-
-.flag-icon--broken:after {
-	transform: translateX(-.5vw) rotate(20deg) translateX(4.2vw) rotateY(160deg);
-	border-color: transparent #212121 transparent transparent;
+.flag-icon.flag-icon--broken {
+	background-image: url('assets/flag-broken.svg');
 }
 
 .disabled {
@@ -315,18 +291,6 @@ table {
 		height: 11.11vh;
 		box-shadow: 0.5vh 0.5vh 0.5vh 0.5vh #5C6BC0 inset, -0.5vh -0.5vh 0.5vh 0.5vh #283593 inset;
 	}
-
-	.flag-icon:after {
-		border-width: 2vh 3vh 2vh 0;
-	}
-
-	.flag-icon--broken:before {
-		transform: translateX(-.5vh) rotate(20deg);
-	}
-	
-	.flag-icon--broken:after {
-		transform: translateX(-.5vh) rotate(20deg) translateX(4.2vh) rotateY(160deg);
-	}
 }
 
 @media only screen and (min-width: 450px) and (min-height: 450px) {
@@ -360,20 +324,8 @@ table {
 		height: 35.5px;
 		box-shadow: 2px 2px 2px 2px #5C6BC0 inset, -2px -2px 2px 2px #283593 inset;
 	}
-	
-	.flag-icon:after {
-		border-width: 7px 10px 7px 0;
-	}
 
 	.popup {
 		width: 284px;
-	}
-
-	.flag-icon--broken:before {
-		transform: translateX(-4px) rotate(20deg);
-	}
-	
-	.flag-icon--broken:after {
-		transform: translateX(-4px) rotate(20deg) translateX(14px) rotateY(160deg);
 	}
 }

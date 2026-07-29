@@ -1,5 +1,5 @@
 /* sync-sw-assets:start */
-const CACHE_NAME = 'minesweeper-65882e5';
+const CACHE_NAME = 'minesweeper-f00cf47';
 const ASSETS = [
   './',
   './index.html',
@@ -13,6 +13,9 @@ const ASSETS = [
   './app-icons/icon-512-maskable.png',
   './app-icons/icon-512.png',
   './assets/explosion.svg',
+  './assets/flag-broken.svg',
+  './assets/flag-dark.svg',
+  './assets/flag.svg',
   './assets/restart.svg',
   './assets/sea-mine.svg',
 ];

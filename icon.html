@@ -13,8 +13,6 @@
       --icon-size: calc(var(--canvas-size) * var(--content-ratio));
       --square-size: calc(var(--icon-size) / 3);
       --bevel: calc(var(--icon-size) * 0.01875);
-      --flag-border-y: calc(var(--icon-size) * 0.065);
-      --flag-border-x: calc(var(--icon-size) * 0.094);
       --main-radius: calc(var(--icon-size) * 0.02);
     }
 
@@ -68,30 +66,11 @@
       line-height: 0;
     }
 
-    .flag-icon:before {
-      content: "";
-      position: absolute;
-      top: 15%;
-      right: 34%;
-      display: block;
-      height: 70%;
-      width: 6%;
-      background-color: #EEEEEE;
-    }
-
-    .square.flag-icon {
-      position: relative;
-    }
-
-    .flag-icon:after {
-      content: "";
-      position: absolute;
-      top: 16%;
-      right: 40%;
-      display: block;
-      border-style: solid;
-      border-width: var(--flag-border-y) var(--flag-border-x) var(--flag-border-y) 0;
-      border-color: transparent #f44336 transparent transparent;
+    .flag-icon {
+      background-image: url('assets/flag.svg');
+      background-repeat: no-repeat;
+      background-size: 75%;
+      background-position: center;
     }
 
     .square {
