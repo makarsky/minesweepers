@@ -67,6 +67,13 @@ main {
 	color: #EEEEEE;
 }
 
+#stopwatch {
+	box-sizing: border-box;
+	min-width: 7.5ch;
+	text-align: center;
+	font-variant-numeric: tabular-nums;
+}
+
 .square-container {
 	height: 100vw;
 	width: 100vw;

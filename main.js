@@ -29,6 +29,7 @@ var UI = (function() {
 	};
 
 	var stopwatchInterval = null;
+	var stopwatchStartTime = null;
 	var flagCounter = bombsNumber;
 	var squares = null;
 
@@ -51,7 +52,8 @@ var UI = (function() {
 
 	function openSquares(squareData) {
 		if (stopwatchInterval === null) {
-			stopwatchInterval = setInterval(updateStopwatch, 1000);
+			stopwatchStartTime = Date.now();
+			stopwatchInterval = setInterval(updateStopwatch, 95);
 		}
 
 		squareData.forEach(function(square) {
@@ -86,25 +88,52 @@ var UI = (function() {
 		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 	}
 
-	function updateStopwatch() {
-		var stopwatch = document.querySelector(DOMstrings.stopwatch);
-		var time = parseInt(stopwatch.innerText);
-		++time;
+	const pad2 = (value) => String(value).padStart(2, '0');
+	const pad3 = (value) => String(value).padStart(3, '0');
 
-		if (time < 1000) {
-			stopwatch.innerText = ('00' + time).slice(-3);
+	const formatStopwatch = (elapsedMs) => {
+		const totalMs = Math.max(0, Math.floor(elapsedMs));
+		const ninetyNineHoursMs = 99 * 60 * 60 * 1000;
+
+		if (totalMs >= ninetyNineHoursMs) {
+			return '99h:99';
 		}
-	}
 
-	function stopStopwatch() {
+		const hours = Math.floor(totalMs / 3_600_000);
+		const minutes = Math.floor((totalMs % 3_600_000) / 60_000);
+		const seconds = Math.floor((totalMs % 60_000) / 1000);
+		const milliseconds = totalMs % 1000;
+
+		if (hours >= 1) {
+			return `${pad2(hours)}h:${pad2(minutes)}`;
+		}
+
+		if (minutes >= 1) {
+			return `${pad2(minutes)}m:${pad2(seconds)}`;
+		}
+
+		return `${pad2(seconds)}:${pad3(milliseconds)}`;
+	};
+
+	const updateStopwatch = () => {
+		const elapsedMs = Date.now() - stopwatchStartTime;
+		document.querySelector(DOMstrings.stopwatch).innerText = formatStopwatch(elapsedMs);
+	};
+
+	const stopStopwatch = () => {
+		if (stopwatchInterval !== null && stopwatchStartTime !== null) {
+			updateStopwatch();
+		}
+
 		clearInterval(stopwatchInterval);
 		stopwatchInterval = null;
-	}
+	};
 
-	function resetStopwatch() {
+	const resetStopwatch = () => {
 		stopStopwatch();
-		document.querySelector(DOMstrings.stopwatch).innerText = '000';
-	}
+		stopwatchStartTime = null;
+		document.querySelector(DOMstrings.stopwatch).innerText = '00:000';
+	};
 
 	function updateFlagCounterUI() {
 		if (flagCounter < 0) {
