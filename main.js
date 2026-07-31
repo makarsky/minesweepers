@@ -13,7 +13,7 @@ var UI = (function() {
 		stopwatch: '#stopwatch',
 		squareClass: 'square',
 		bomb: 'square--bomb',
-		checkmark: 'square--checkmark',
+		win: 'square--win',
 		exploded: 'square--exploded',
 		open: 'square--open',
 		open0: 'square--open0',
@@ -84,12 +84,12 @@ var UI = (function() {
 		});
 	}
 
-	const showWin = (unflaggedBombs) => {
+	const showWin = (bombs) => {
 		stopStopwatch();
 		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 
-		unflaggedBombs.forEach((square) => {
-			squares[square.index].classList.add(DOMstrings.checkmark, DOMstrings.emoji);
+		bombs.forEach((bomb) => {
+			squares[bomb.index].classList.add(DOMstrings.win);
 		});
 	};
 
@@ -367,25 +367,24 @@ var Game = (function() {
 		}) && (flags.length === bombsNumber);
 	}
 
-	const getUnflaggedBombs = () => {
+	const getBombs = () => {
 		const bombs = [];
 
 		squares.forEach((row, i) => {
 			row.forEach((square, j) => {
-				if (square.value !== 'b') {
-					return;
-				}
-
-				const index = getSquareIndexByCoords({row: i, col: j});
-				const isFlagged = flags.some((flag) => flag.index === index);
-
-				if (!isFlagged) {
-					bombs.push({value: 'b', index});
+				if (square.value === 'b') {
+					bombs.push({value: 'b', index: getSquareIndexByCoords({row: i, col: j})});
 				}
 			});
 		});
 
 		return bombs;
+	};
+
+	const getUnflaggedBombs = () => {
+		return getBombs().filter((bomb) => {
+			return !flags.some((flag) => flag.index === bomb.index);
+		});
 	};
 
 	const getFlagAndBombValidation = () => {
@@ -407,6 +406,7 @@ var Game = (function() {
 		restart,
 		areAllSafeSquaresOpened,
 		areAllFlagsCorrect,
+		getBombs,
 		getUnflaggedBombs,
 		getFlagAndBombValidation
 	};
@@ -538,7 +538,7 @@ var Controller = (function(UIController, GameController) {
 	};
 
 	const showWin = () => {
-		UIController.showWin(GameController.getUnflaggedBombs());
+		UIController.showWin(GameController.getBombs());
 	};
 
 	function showFlagAndBombValidation() {

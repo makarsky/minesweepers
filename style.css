@@ -191,12 +191,63 @@ main {
 	background-image: url('assets/sea-mine.svg');
 }
 
-.square--checkmark {
-	background-image: url('assets/checkmark.svg');
-}
-
 .square--exploded {
 	background-image: url('assets/explosion.svg');
+}
+
+.square.square--win {
+	position: relative;
+	perspective: 140px;
+	background-image: none;
+}
+
+.square--win::before,
+.square--win::after {
+	content: '';
+	position: absolute;
+	inset: 12.5%;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+}
+
+.square--win::before {
+	background-image: url('assets/checkmark.svg');
+	animation: win-checkmark 1.2s forwards;
+}
+
+.square--win::after {
+	background-image: url('assets/flag.svg');
+	animation: win-flag 0.6s 1.2s ease-out both;
+}
+
+@keyframes win-checkmark {
+	0% {
+		transform: rotateY(-90deg);
+	}
+	35% {
+		transform: rotateY(-15deg);
+	}
+	50% {
+		transform: rotateY(0deg);
+	}
+	65% {
+		transform: rotateY(15deg);
+	}
+	100% {
+		transform: rotateY(90deg);
+	}
+}
+
+@keyframes win-flag {
+	0% {
+		transform: rotateY(-90deg);
+	}
+	100% {
+		transform: rotateY(0deg);
+	}
 }
 
 h2 {
