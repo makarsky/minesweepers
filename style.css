@@ -191,6 +191,10 @@ main {
 	background-image: url('assets/sea-mine.svg');
 }
 
+.square--checkmark {
+	background-image: url('assets/checkmark.svg');
+}
+
 .square--exploded {
 	background-image: url('assets/explosion.svg');
 }

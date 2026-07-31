@@ -13,6 +13,7 @@ var UI = (function() {
 		stopwatch: '#stopwatch',
 		squareClass: 'square',
 		bomb: 'square--bomb',
+		checkmark: 'square--checkmark',
 		exploded: 'square--exploded',
 		open: 'square--open',
 		open0: 'square--open0',
@@ -83,10 +84,14 @@ var UI = (function() {
 		});
 	}
 
-	function showWin() {
+	const showWin = (unflaggedBombs) => {
 		stopStopwatch();
 		document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
-	}
+
+		unflaggedBombs.forEach((square) => {
+			squares[square.index].classList.add(DOMstrings.checkmark, DOMstrings.emoji);
+		});
+	};
 
 	const pad2 = (value) => String(value).padStart(2, '0');
 	const pad3 = (value) => String(value).padStart(3, '0');
@@ -362,27 +367,31 @@ var Game = (function() {
 		}) && (flags.length === bombsNumber);
 	}
 
-	function getFlagAndBombValidation() {
-		var bombs = [];
-		var bombIndeces = [];
+	const getUnflaggedBombs = () => {
+		const bombs = [];
 
-		squares.forEach(function(row, i) {
-			row.forEach(function(square, j) {
-				if (square.value === 'b') {
-					var bomb = {value: 'b', index: getSquareIndexByCoords ({row: i, col: j})}
-					var isFlagged = flags.some(function(flag) { return flag.index === bomb.index; });
-					
-					if (!isFlagged) {
-						bombs.push(bomb);
-					}
-					bombIndeces.push(bomb.index);
+		squares.forEach((row, i) => {
+			row.forEach((square, j) => {
+				if (square.value !== 'b') {
+					return;
+				}
+
+				const index = getSquareIndexByCoords({row: i, col: j});
+				const isFlagged = flags.some((flag) => flag.index === index);
+
+				if (!isFlagged) {
+					bombs.push({value: 'b', index});
 				}
 			});
 		});
 
-		var wrongFlags = flags.filter(function(flag) { return bombIndeces.indexOf(flag.index) === -1; });
-		return bombs.concat(wrongFlags);
-	}
+		return bombs;
+	};
+
+	const getFlagAndBombValidation = () => {
+		const wrongFlags = flags.filter((flag) => squares[flag.row][flag.col].value !== 'b');
+		return getUnflaggedBombs().concat(wrongFlags);
+	};
 
 	return {
 		init,
@@ -398,6 +407,7 @@ var Game = (function() {
 		restart,
 		areAllSafeSquaresOpened,
 		areAllFlagsCorrect,
+		getUnflaggedBombs,
 		getFlagAndBombValidation
 	};
 })();
@@ -515,17 +525,21 @@ var Controller = (function(UIController, GameController) {
 		document.dispatchEvent(new Event('checkIfWinByFlag'));
 	}
 
-	function checkIfWinByOpenedSquares() {
+	const checkIfWinByOpenedSquares = () => {
 		if (GameController.areAllSafeSquaresOpened()) {
-			UIController.showWin();
+			showWin();
 		}
-	}
+	};
 
-	function checkIfWinByFlag() {
+	const checkIfWinByFlag = () => {
 		if (GameController.areAllFlagsCorrect() && !firstReveal) {
-			UIController.showWin();
+			showWin();
 		}
-	}
+	};
+
+	const showWin = () => {
+		UIController.showWin(GameController.getUnflaggedBombs());
+	};
 
 	function showFlagAndBombValidation() {
 		var squares = GameController.getFlagAndBombValidation();
