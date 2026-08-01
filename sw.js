@@ -1,5 +1,5 @@
 /* sync-sw-assets:start */
-const CACHE_NAME = 'minesweeper-7672a1e';
+const CACHE_NAME = 'minesweeper-d15d0c5';
 const ASSETS = [
   './',
   './index.html',

@@ -350,16 +350,13 @@ var Game = (function() {
 		init();
 	}
 
-	function areAllSafeSquaresOpened() {
-		var numberOfOpened = 0;
-		squares.forEach(function(row) {
-			numberOfOpened += row.filter(function(square) {
-				return square.isOpen;
-			}).length;
-		});
-		
-		return (rowNumber * rowNumber - numberOfOpened) === bombsNumber;
-	}
+	const areAllSafeSquaresOpened = () => {
+		const numberOfOpenedSafe = squares.reduce((count, row) => {
+			return count + row.filter((square) => square.isOpen && square.value !== 'b').length;
+		}, 0);
+
+		return numberOfOpenedSafe === (rowNumber * rowNumber - bombsNumber);
+	};
 
 	function areAllFlagsCorrect() {
 		return flags.every(function(flag) {
@@ -478,23 +475,27 @@ var Controller = (function(UIController, GameController) {
 			return;
 		}
 
-		var index = UIController.getIndexOfSquare(event.target);
+		const index = UIController.getIndexOfSquare(event.target);
 
 		/** [{index: 1, value: 'b'||0||5}] */
-		var squareData = GameController.openSquaresByIndex(index);
+		const squareData = GameController.openSquaresByIndex(index);
+
+		if (!squareData.length) {
+			return;
+		}
 
 		if (squareData[0].value === 'b' && firstReveal) {
 			GameController.init();
 			handleSquare(event);
 			return;
-		} else if (squareData[0].value === 'b') {
-			document.dispatchEvent(new Event('gameOver'));
 		}
 
 		firstReveal = false;
+		UIController.openSquares(squareData);
 
-		if (squareData) {
-			UIController.openSquares(squareData);
+		if (squareData[0].value === 'b') {
+			document.dispatchEvent(new Event('gameOver'));
+			return;
 		}
 
 		document.dispatchEvent(new Event('checkIfWinByOpenedSquares'));
