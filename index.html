@@ -22,19 +22,6 @@
   <div class="container">
     <div class="app-container">
       <header class="side flex-item">
-        <div id="flag-counter" class="header-item label">010</div>
-        <div class="header-item">
-          <div id="restart-btn" class="square btn emoji" aria-label="Restart"></div>
-        </div>
-        <div class="header-item">
-          <div id="enable-flag-btn" class="square btn flag-icon"></div>
-        </div>
-        <div id="stopwatch" class="header-item label">00:000</div>
-      </header>
-      <main class="flex-item">
-        <div class="square-container"></div>
-      </main>
-      <footer class="side flex-item">
         <div class="button-area">
           <div class="square btn" onclick="this.nextSibling.nextSibling.classList.remove('hidden')">?
           </div>
@@ -79,6 +66,19 @@
             </div>
           </div>
         </div>
+      </header>
+      <main class="flex-item">
+        <div class="square-container"></div>
+      </main>
+      <footer class="side flex-item">
+        <div id="flag-counter" class="header-item label">010</div>
+        <div class="header-item">
+          <div id="restart-btn" class="square btn emoji" aria-label="Restart"></div>
+        </div>
+        <div class="header-item">
+          <div id="enable-flag-btn" class="square btn flag-icon"></div>
+        </div>
+        <div id="stopwatch" class="header-item label">00:000</div>
       </footer>
     </div>
   </div>
