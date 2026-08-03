@@ -51,26 +51,31 @@ var UI = (function() {
 		return squares.indexOf(squareElement);
 	}
 
-	function openSquares(squareData) {
-		if (stopwatchInterval === null) {
+	const openSquares = (squareData) => {
+		const isBombHit = squareData.some((square) => square.value === 'b');
+
+		if (!isBombHit && stopwatchInterval === null) {
 			stopwatchStartTime = Date.now();
 			stopwatchInterval = setInterval(updateStopwatch, 95);
 		}
 
-		squareData.forEach(function(square) {
-			var squareElement = squares[square.index];
+		squareData.forEach((square) => {
+			const squareElement = squares[square.index];
 			squareElement.classList.add(DOMstrings.open);
 
-			if (typeof (square.value) === 'number' && square.value > 0) {
+			if (typeof square.value === 'number' && square.value > 0) {
 				squareElement.classList.add(DOMstrings['open' + square.value]);
 				squareElement.textContent = square.value;
-			} else if (square.value === 'b') {
+				return;
+			}
+
+			if (square.value === 'b') {
 				squareElement.classList.add(DOMstrings.exploded, DOMstrings.emoji);
 				document.querySelector(DOMstrings.container).classList.add(DOMstrings.disabled);
 				stopStopwatch();
 			}
 		});
-	}
+	};
 
 	function showFlagAndBombValidation(bombsAndWrongFlags) {
 		bombsAndWrongFlags.forEach(function(square) {
@@ -197,7 +202,8 @@ var UI = (function() {
 		},
 		restart,
 		showWin,
-		showFlagAndBombValidation
+		showFlagAndBombValidation,
+		stopStopwatch
 	};
 })();
 
@@ -414,6 +420,7 @@ var Game = (function() {
 var Controller = (function(UIController, GameController) {
 	var DOM = UIController.getDOMstrings();
 	var firstReveal = true;
+	let isGameOver = false;
 
 	function setupEventListeners() {
         document.querySelector(DOM.enableFlagBtn).addEventListener('click', toggleFlagEnabled);
@@ -459,9 +466,10 @@ var Controller = (function(UIController, GameController) {
 		UIController.toggleFlagEnabled();
 	}
 
-	function handleSquare(event) {
+	const handleSquare = (event) => {
 		if (
-			!event.target.classList.contains(DOM.squareClass)
+			isGameOver
+			|| !event.target.classList.contains(DOM.squareClass)
 			|| event.target.classList.contains(DOM.open)
 		) {
 			return;
@@ -494,6 +502,7 @@ var Controller = (function(UIController, GameController) {
 		UIController.openSquares(squareData);
 
 		if (squareData[0].value === 'b') {
+			isGameOver = true;
 			document.dispatchEvent(new Event('gameOver'));
 			return;
 		}
@@ -501,21 +510,26 @@ var Controller = (function(UIController, GameController) {
 		document.dispatchEvent(new Event('checkIfWinByOpenedSquares'));
 	};
 	
-	function restart() {
+	const restart = () => {
 		firstReveal = true;
+		isGameOver = false;
 		GameController.restart();
 		UIController.restart();
-	}
+	};
 
-	function toggleFlag(event) {
+	const toggleFlag = (event) => {
 		event.preventDefault();
 
-		if (!event.target.classList.contains(DOM.squareClass) || event.target.classList.contains(DOM.open)) {
+		if (
+			isGameOver
+			|| !event.target.classList.contains(DOM.squareClass)
+			|| event.target.classList.contains(DOM.open)
+		) {
 			return;
 		}
-		
-		var index = UIController.getIndexOfSquare(event.target);
-		var isFlagAdded = GameController.toggleFlag(index);
+
+		const index = UIController.getIndexOfSquare(event.target);
+		const isFlagAdded = GameController.toggleFlag(index);
 
 		if (isFlagAdded) {
 			UIController.putFlag(event.target);
@@ -524,7 +538,7 @@ var Controller = (function(UIController, GameController) {
 		}
 
 		document.dispatchEvent(new Event('checkIfWinByFlag'));
-	}
+	};
 
 	const checkIfWinByOpenedSquares = () => {
 		if (GameController.areAllSafeSquaresOpened()) {
@@ -539,13 +553,14 @@ var Controller = (function(UIController, GameController) {
 	};
 
 	const showWin = () => {
+		isGameOver = true;
 		UIController.showWin(GameController.getBombs());
 	};
 
-	function showFlagAndBombValidation() {
-		var squares = GameController.getFlagAndBombValidation();
-		UIController.showFlagAndBombValidation(squares);
-	}
+	const showFlagAndBombValidation = () => {
+		UIController.stopStopwatch();
+		UIController.showFlagAndBombValidation(GameController.getFlagAndBombValidation());
+	};
 
 	return {
 		init
