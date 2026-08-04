@@ -33,6 +33,8 @@ var UI = (function() {
 	var stopwatchStartTime = null;
 	var flagCounter = bombsNumber;
 	var squares = null;
+	let holdIndicatorRadiusPx = 48;
+	let holdIndicatorElement = null;
 
 	function init() {
 		var container = document.querySelector(DOMstrings.container);
@@ -171,9 +173,39 @@ var UI = (function() {
 		updateFlagCounterUI();
 	}
 
+	const removeHoldIndicator = () => {
+		if (!holdIndicatorElement) {
+			return;
+		}
+
+		holdIndicatorElement.remove();
+		holdIndicatorElement = null;
+	};
+
+	const showHoldIndicator = (squareElement) => {
+		removeHoldIndicator();
+
+		const container = document.querySelector(DOMstrings.container);
+		const squareRect = squareElement.getBoundingClientRect();
+		const containerRect = container.getBoundingClientRect();
+		const diameter = holdIndicatorRadiusPx * 2;
+		const centerX = squareRect.left + squareRect.width / 2 - containerRect.left;
+		const centerY = squareRect.top + squareRect.height / 2 - containerRect.top;
+
+		const circle = document.createElement('div');
+		circle.className = 'hold-indicator';
+		circle.style.width = `${diameter}px`;
+		circle.style.height = `${diameter}px`;
+		circle.style.left = `${centerX - holdIndicatorRadiusPx}px`;
+		circle.style.top = `${centerY - holdIndicatorRadiusPx}px`;
+		container.appendChild(circle);
+		holdIndicatorElement = circle;
+	};
+
 	function restart() {
 		resetStopwatch();
 		disableFlagEnabled();
+		removeHoldIndicator();
 		flagCounter = bombsNumber;
 		resetFlagCounterUI();
 
@@ -193,6 +225,8 @@ var UI = (function() {
 		getIndexOfSquare,
 		putFlag,
 		removeFlag,
+		showHoldIndicator,
+		removeHoldIndicator,
 		openSquares,
 		getDOMstrings: function() {
 			return DOMstrings;
@@ -432,22 +466,53 @@ var Controller = (function(UIController, GameController) {
 		document.addEventListener('gameOver', showFlagAndBombValidation);
 	}
 
-	function setupTapAndHold() {
-		var holdStart;
+	const setupTapAndHold = () => {
+		const holdDelayMs = 200;
+		let holdTimeout = null;
+		let holdTriggered = false;
 
-		document.querySelector(DOM.container).addEventListener('touchstart', function(e) {
-			document.querySelector(DOM.container).removeEventListener('contextmenu', toggleFlag);
-			document.querySelector(DOM.container).removeEventListener('mouseup', mouseup);
-			
-			holdStart = new Date();
-		});
-		document.querySelector(DOM.container).addEventListener('touchend', function(e) {
-			var diff = new Date() - holdStart;
-			diff > 300 ? toggleFlag(e) : handleSquare(e);
+		const container = document.querySelector(DOM.container);
+
+		const clearHoldTimeout = () => {
+			clearTimeout(holdTimeout);
+			holdTimeout = null;
+		};
+
+		container.addEventListener('touchstart', (e) => {
+			container.removeEventListener('contextmenu', toggleFlag);
+			container.removeEventListener('mouseup', mouseup);
+
+			clearHoldTimeout();
+			holdTriggered = false;
+
+			const target = e.target;
+
+			holdTimeout = setTimeout(() => {
+				holdTimeout = null;
+				holdTriggered = true;
+
+				if (toggleFlag({ target, preventDefault() {} })) {
+					UIController.showHoldIndicator(target);
+				}
+			}, holdDelayMs);
 		});
 
-		document.querySelector(DOM.container).addEventListener('mouseup', mouseup);
-	}
+		container.addEventListener('touchend', (e) => {
+			clearHoldTimeout();
+			UIController.removeHoldIndicator();
+
+			if (!holdTriggered) {
+				handleSquare(e);
+			}
+		});
+
+		container.addEventListener('touchcancel', () => {
+			clearHoldTimeout();
+			UIController.removeHoldIndicator();
+		});
+
+		container.addEventListener('mouseup', mouseup);
+	};
 
 	function mouseup(e) {
 		if (e.button === 0) {
@@ -525,7 +590,7 @@ var Controller = (function(UIController, GameController) {
 			|| !event.target.classList.contains(DOM.squareClass)
 			|| event.target.classList.contains(DOM.open)
 		) {
-			return;
+			return false;
 		}
 
 		const index = UIController.getIndexOfSquare(event.target);
@@ -538,6 +603,7 @@ var Controller = (function(UIController, GameController) {
 		}
 
 		document.dispatchEvent(new Event('checkIfWinByFlag'));
+		return true;
 	};
 
 	const checkIfWinByOpenedSquares = () => {
