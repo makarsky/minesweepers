@@ -25,8 +25,7 @@ var UI = (function() {
 		open6: 'square--open6',
 		open7: 'square--open7',
 		open8: 'square--open8',
-		emoji: 'emoji',
-		hidden: 'hidden'
+		emoji: 'emoji'
 	};
 
 	var stopwatchInterval = null;
@@ -636,10 +635,3 @@ var Controller = (function(UIController, GameController) {
 document.addEventListener('DOMContentLoaded', function() {
 	Controller.init();
 });
-
-function toggleHint(e) {
-	var hints = document.querySelectorAll('.hint');
-	hints[0].classList.toggle('hidden');
-	hints[1].classList.toggle('hidden');
-	e.stopPropagation();
-}

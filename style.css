@@ -9,9 +9,6 @@ html {
     	user-select: none;
 }
 
-a {
-	color: #212121
-}
 body {
 	margin: 0;
 	padding: 0;
@@ -91,10 +88,6 @@ main {
 	z-index: 10;
 }
 
-.button-area {
-	margin: auto;
-}
-
 .flag-icon {
 	background-image: url('assets/flag.svg');
 	background-repeat: no-repeat;
@@ -112,10 +105,6 @@ main {
 
 .disabled {
 	pointer-events: none;
-}
-
-.hidden {
-	display: none;
 }
 
 .emoji {
@@ -261,73 +250,6 @@ main {
 	}
 }
 
-h2 {
-	margin: 0;
-}
-
-p {
-	margin: 6px 0;
-}
-
-table {
-	width: 100%;
-}
-
-.popup-container {
-	position: absolute;
-    display: flex;
-	align-items: center;
-	left: 0;
-	top: 0;
-	height: 100vh;
-	width: 100vw;
-	transition: height .5s;
-}
-
-.popup-container.hidden {
-	height: 0vh;
-}
-
-.perspective {
-	display: flex;
-    align-items: center;
-    justify-content: center;
-	position: relative;
-	margin: 0 auto;
-	height: 95vh;
-	transition: transform .6s;
-}
-
-.popup-container.hidden .perspective {
-	transform: translateY(-100vh);
-}
-
-.popup {
-	background: white;
-	border-radius: 12px;
-	padding: 12px;
-	transform: rotateX(0deg);
-	opacity: 1;
-	transition: transform .2s ease-in-out, opacity .15s ease-in-out;
-	width: 90vw;
-}
-
-.popup-container.hidden .popup {
-	transform: rotateX(-90deg);
-	opacity: 0;
-}
-
-.btn-close {
-	position: absolute;
-	right: 6px;
-	display: inline-block;
-	font-size: 24px;
-	height: 24px;
-    width: 24px;
-	line-height: 24px;
-	color: #212121;
-}
-
 @media only screen and (max-height: 450px) and (orientation: landscape) {
 
 	.app-container {
@@ -396,9 +318,5 @@ table {
 		width: 35.5px;
 		height: 35.5px;
 		box-shadow: 2px 2px 2px 2px #5C6BC0 inset, -2px -2px 2px 2px #283593 inset;
-	}
-
-	.popup {
-		width: 284px;
 	}
 }
